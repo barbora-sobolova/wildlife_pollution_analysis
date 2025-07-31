@@ -82,10 +82,10 @@ clean_data <- raw_data |>
 # Fix mistyped dates
 clean_data[clean_data$Sample_number == "F15", "Date_of_sample_collection"] <- 
   as.Date("2023-11-30")
-clean_data[clean_data$Sample_number == "F37", "Date_of_sample_collection"] <- 
-  as.Date("2023-11-24")  # Need to verify
-clean_data[clean_data$Sample_number == "Z73", "Date_of_sample_collection"] <- 
-  as.Date("2024-08-03")  # Need to verify
+clean_data[clean_data$Sample_number == "F37", "Date_of_sample_collection"] <-
+  as.Date("2023-11-24")
+clean_data[clean_data$Sample_number == "Z73", "Date_of_sample_collection"] <-
+  as.Date("2024-08-03")
 clean_data[clean_data$Sample_number == "F15", "Season"] <- "Winter 2023/24"
 clean_data[clean_data$Sample_number == "F37", "Season"] <- "Winter 2023/24"
 clean_data[clean_data$Sample_number == "Z73", "Season"] <- "Summer 2024"
