@@ -66,7 +66,8 @@ for (k in seq_along(category_names)) {
     control = list(iter = 500)
   )
 
-  # Plot results
+  # Plot results (If throws one warning
+  # "Removed 1 row containing missing values"), everything is fine.
   plt_by_category[[k]] <- plot_results(
     df_filtered,
     mods_by_category[[k]],
@@ -79,8 +80,8 @@ for (k in seq_along(category_names)) {
       ".pdf"
     ),
     plt_by_category[[k]],
-    width = 9,
-    height = 8
+    width = 10,
+    height = 9
   )
 }
 
