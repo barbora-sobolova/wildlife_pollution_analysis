@@ -9,28 +9,18 @@ source("scripts/plot_elements.R")
 
 # Function converting the rgb color codes to hex for the color choice
 # Can be deleted as soon as all colors are determined
-rgb2hex <- function(rgbmat){
+rgb2hex <- function(rgbmat) {
   # function to apply to each column of input rgbmat
-  ProcessColumn = function(col){
-    rgb(rgbmat[1, col],
-        rgbmat[2, col],
-        rgbmat[3, col],
-        maxColorValue = 255)
+  process_column <- function(col) {
+    rgb(rgbmat[1, col], rgbmat[2, col], rgbmat[3, col], maxColorValue = 255)
   }
   # Apply the function
-  sapply(1:ncol(rgbmat), ProcessColumn)
-}
-
-# Plot the boxes with whiskers
-boxplot_custom <- function(x) {
-  r <- quantile(x, probs = c(0.00, 0.25, 0.5, 0.75, 1))
-  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
-  r
+  sapply(1:ncol(rgbmat), process_column)
 }
 
 # Read the cleaned data and convert categories to factors ======================
 
-df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>% 
+df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
   mutate(
     # It will be ordered as Quantified < Detected < Not detected, to display
     # correctly in the mosaic plot
@@ -48,21 +38,31 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
     Sex = factor(Sex, levels = c("Male", "Female")),
     Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
     Species = factor(Species, levels = c("D. dama", "C. elaphus")),
-    Season = factor(Season, levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24"))
+    Season = factor(
+      Season,
+      levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
+    )
   )
 dat <- read_csv("data/clean_data.csv") %>%
-   mutate(
-     Sex = factor(Sex, levels = c("Male", "Female")),
-     Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
-     Species = factor(Species, levels = c("C. capreolus", "D. dama", "C. elaphus")),
-     Season = factor(Season, levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24"))
-   ) %>% # Convert the measurements to character to avoid problems when pivoting
+  mutate(
     Park = factor(
       Park,
       levels = names(park_labels),
       # ordered = TRUE for displaying in a correct order in the boxplots
       ordered = TRUE
     ),
+    Sex = factor(Sex, levels = c("Male", "Female")),
+    Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
+    Species = factor(
+      Species,
+      levels = c("D. dama", "C. elaphus")
+    ),
+    Season = factor(
+      Season,
+      levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
+    )
+  ) %>%
+  # Convert the measurements to character to avoid problems when pivoting
   mutate_at(vars(-Age, -Species, -Sex, -Season, -Park), as.character)
 
 # Prepare the data frame for the boxplots ======================================
@@ -71,10 +71,57 @@ dat <- read_csv("data/clean_data.csv") %>%
 df_quantified_by_category <- filter(
   df_detected_by_category,
   Detected_by_category == "Quantified"
-) %>% group_by(Park, primary_category) %>%
+) %>%
+  group_by(Park, primary_category) %>%
   mutate(nobs = n()) %>%
   ungroup() %>%
   mutate(Boxplot = nobs >= 5, placeholder = "placeholder")
+
+# Plot the quantified values as boxplots in time ===============================
+#
+# df_quantified_by_category <- df_quantified_by_category |>
+#   mutate(
+#     Month = floor_date(Date_of_sample_collection, unit = "month"),
+#     Park_month_interaction = interaction(Park, Month)
+#     )
+#
+# boxplots_in_time <- ggplot(
+#   df_quantified_by_category,
+#   aes(x = Month, y = Value_sum_by_category, group = Month)
+#   ) +
+#   scale_color_manual(values = park_colors) +
+#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE) +
+#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
+#   labs(x = "Month", y = "Concentration", title = "Concentration in time (outliers removed)")
+# ggsave("figure/concentration_seasonality.pdf", boxplots_in_time,
+#        width = 6, height = 10)
+#
+# anthropo_boxplot_in_time <- df_quantified_by_category |>
+#   filter(primary_category == "Anthropogenic pollution") |>
+#   ggplot(
+#     aes(x = Month, y = Value_sum_by_category, group = interaction(Month, Park),
+#         color = Park, fill = Park)
+#   ) +
+#   scale_color_manual(values = park_colors) +
+#   scale_fill_manual(values = park_colors) +
+#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE, width = 200,
+#                alpha = 0.5) +
+#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
+#   labs(x = "Month", y = "Concentration", title = "Concentration in time (outliers removed)")
+#
+#
+# pop_boxplot_in_time <- df_quantified_by_category |>
+#   filter(primary_category == "POP") |>
+#   ggplot(
+#     aes(x = Month, y = Value_sum_by_category, group = interaction(Month, Park),
+#         color = Park, fill = Park)
+#   ) +
+#   scale_color_manual(values = park_colors) +
+#   scale_fill_manual(values = park_colors) +
+#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE, width = 200,
+#                alpha = 0.5) +
+#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
+#   labs(x = "Month", y = "Concentration", title = "POPs concentration in time (outliers removed)")
 
 # Create the data frames for the mosaic plots ==================================
 
@@ -101,15 +148,15 @@ for (k in seq_along(primary_category_labels)) {
 
 for (covariate in names(df_rectangles)) {
   df_mosaic[[covariate]] <- bind_rows(
-    df_rectangles[[covariate]], 
+    df_rectangles[[covariate]],
     .id = "primary_category"
   ) %>%
     mutate(
       bar = factor(bar, levels = levels(dat$Park)),
       primary_category = factor(
-        primary_category, 
+        primary_category,
         labels = names(primary_category_labels)
-        ),
+      ),
       sec_split = factor(
         sec_split,
         levels = c("Not detected", "Detected", "Quantified"),
@@ -124,15 +171,15 @@ barplots_covariates <- vector("list", 3)
 names(barplots_covariates) <- c("Sex", "Age", "Species")
 for (covariate in names(barplots_covariates)) {
   barplots_covariates[[covariate]] <- ggplot(
-    dat, 
+    dat,
     aes(x = Park, fill = .data[[covariate]])
-    ) +
+  ) +
     geom_bar(position = "fill", width = 0.90) +
     scale_fill_manual(values = barplot_colors[[covariate]]) +
     scale_y_continuous(
-      breaks = seq(0, 1, by = 0.2), 
+      breaks = seq(0, 1, by = 0.2),
       labels = paste0(seq(0, 100, by = 20), "%")
-      ) +
+    ) +
     scale_x_discrete(labels = park_labels) +
     labs(y = "", title = covariate) +
     barplot_desciptive_theme
@@ -144,8 +191,10 @@ barplot_season <- ggplot(dat, aes(x = Park, fill = Season)) +
   labs(y = "", title = "Season of sample collection") +
   barplot_desciptive_theme
 
-barplots <- barplot_season + barplots_covariates$Sex + 
-  barplots_covariates$Age + barplots_covariates$Species +
+barplots <- barplot_season +
+  barplots_covariates$Sex +
+  barplots_covariates$Age +
+  barplots_covariates$Species +
   plot_layout(nrow = 2, ncol = 2)
 
 ggsave("figure/descriptive_barplots.pdf", barplots, width = 10, height = 6.5)
@@ -153,7 +202,7 @@ ggsave("figure/descriptive_barplots.pdf", barplots, width = 10, height = 6.5)
 # Mosaic plots =================================================================
 
 # Set the positions of the breaks on the x axis to be in the center of the bar
-x_axis_breaks <- seq(0, 1, length = length(park_labels) + 1)[-1] - 
+x_axis_breaks <- seq(0, 1, length = length(park_labels) + 1)[-1] -
   1 / (length(park_labels) * 2)
 
 # Mosaic plot by sex
@@ -161,17 +210,17 @@ mosaic_sex <- ggplot(
   df_mosaic$Sex,
   aes(
     xmin = xmin,
-    xmax = xmax, 
-    ymin = ymin, 
-    ymax = ymax, 
-    fill = interaction(split, sec_split), 
+    xmax = xmax,
+    ymin = ymin,
+    ymax = ymax,
+    fill = interaction(split, sec_split),
     alpha = sec_split
   )
 ) +
   geom_rect() +
   scale_x_continuous(breaks = x_axis_breaks, labels = park_labels) +
   scale_y_continuous(
-    breaks = seq(0, 1, by = 0.2), 
+    breaks = seq(0, 1, by = 0.2),
     labels = paste0(seq(0, 100, by = 20), "%")
   ) +
   scale_alpha_manual(values = c(1, 1, 1)) +
@@ -199,18 +248,18 @@ ggsave("figure/mosaic_sex.pdf", mosaic_sex, width = 12, height = 8)
 mosaic_species <- ggplot(
   df_mosaic$Species,
   aes(
-    xmin = xmin, 
-    xmax = xmax, 
-    ymin = ymin, 
-    ymax = ymax, 
-    fill = interaction(split, sec_split), 
+    xmin = xmin,
+    xmax = xmax,
+    ymin = ymin,
+    ymax = ymax,
+    fill = interaction(split, sec_split),
     alpha = sec_split
   )
 ) +
   geom_rect() +
   scale_x_continuous(breaks = x_axis_breaks, labels = park_labels) +
   scale_y_continuous(
-    breaks = seq(0, 1, by = 0.2), 
+    breaks = seq(0, 1, by = 0.2),
     labels = paste0(seq(0, 100, by = 20), "%")
   ) +
   scale_alpha_manual(values = c(1, 1, 1)) +
@@ -242,12 +291,12 @@ mosaic_age <- ggplot(
     fill = interaction(split, sec_split),
     alpha = sec_split,
     linetype = sec_split  # Placeholder aestetic to create the legend
-    )
+  )
 ) +
   geom_rect() +
   scale_x_continuous(breaks = x_axis_breaks, labels = park_labels) +
   scale_y_continuous(
-    breaks = seq(0, 1, by = 0.2), 
+    breaks = seq(0, 1, by = 0.2),
     labels = paste0(seq(0, 100, by = 20), "%")
   ) +
   scale_alpha_manual(values = c(1, 1, 1)) +
