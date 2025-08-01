@@ -83,16 +83,6 @@ plot_results <- function(
       aes(x = Date_of_sample_collection, ymin = lower, ymax = upper),
       alpha = 0.5
     ) +
-    geom_point(
-      data = df_filtered,
-      aes(x = Date_of_sample_collection, y = 0, color = "placeholder"),
-      shape = 1
-    ) +
-    scale_color_manual(
-      values = c("placeholder" = "black"),
-      labels = "Observation",
-      name = ""
-    ) +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
     labs(
       x = "Date",
