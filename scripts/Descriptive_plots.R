@@ -285,94 +285,91 @@ barplot_quantified <- ggplot(
     fill = Park,
     alpha = fct_relevel(Detected_by_category, rev),
     color = Detected_by_category
-    )
-  ) +
+  )
+) +
   geom_bar(position = "fill", width = 1, linewidth = 0.2) +
   scale_x_continuous(breaks = c(0, 0.5, 1)) +
   scale_y_discrete(limits = rev(levels(df_detected_by_category$Park))) +
-  facet_grid(primary_category~., switch = "y", labeller = as_labeller(primary_category_labels)) +
+  facet_grid(
+    primary_category ~ .,
+    switch = "y",
+    labeller = as_labeller(primary_category_labels)
+  ) +
   scale_color_manual(
-    values = c("Quantified" = "gray10", "Detected" = "gray10", "Not detected" = alpha("white", 0)),
-    guide = "none"
-  ) +
-  scale_fill_manual(
-    name = "National park",
-    values = park_colors,
-    labels = park_labels
-  ) +
-  scale_alpha_manual(
-    name = "Left panel:",
-    breaks = c("Quantified", "Detected"),
-    values = c("Quantified" = 1, "Detected" = 0.5, "Not detected" = 0),
-    labels = c("Quantified" = "Quantified", "Detected" = "Detected only \nQualitatively")
-  ) +
-  labs(y = "", title = "Occurence", x = "proportion exactly quantified \n or qualitatively detected") +
-  guides(
-    fill = guide_legend(order = 1),  # National parks first
-    alpha = guide_legend(
-      order = 2,
-      title = "Occurence\nof pollutants\n(left panel):",
-      override.aes = list(
-        fill = c("Quantified" = "gray20", "Detected" = "gray60"),
-        alpha = c("Quantified" = 1, "Detected" = 1),
-        color = c("Quantified" = "gray10", "Detected" = "gray10"),
-        linewidth = c("Quantified" = 0.2, "Detected" = 0.2)
-      )
+    values = c(
+      "Quantified" = "gray10",
+      "Detected" = "gray10",
+      "Not detected" = alpha("white", 0)
     )
+  ) +
+  scale_fill_manual(values = park_colors) +
+  scale_alpha_manual(
+    values = c("Quantified" = 1, "Detected" = 0.5, "Not detected" = 0)
+  ) +
+  labs(
+    y = "",
+    title = "Occurence",
+    x = "\nProportion exactly quantified\nor qualitatively detected"
   ) +
   barplot_detection_theme
 
 boxplot_quantified <- ggplot(
   df_quantified_by_category,
   aes(
-    x = Value_sum_by_category, 
-    y = Park, 
-    fill = Park, 
+    x = Value_sum_by_category,
+    y = Park,
+    fill = Park,
     color = Park
   )
 ) +
-  geom_point(  # Points for n < 5
-    data =  ~ subset(., !Boxplot),
+  geom_point(
+    # Points for n < 5
+    data = ~ subset(., !Boxplot),
     size = 1,
     shape = 1
   ) +
-  stat_summary(  # Boxplot for nobs >= 5
+  # Standard boxplots with the whiskers extending to 1.5 times the interquartile
+  # range
+  geom_boxplot(
     data = ~ subset(., Boxplot),
-    fun.data = boxplot_custom,
     linewidth = 0.2,
-    geom = "boxplot",
     staplewidth = 1,
-    width = 0.8
+    width = 0.8,
+    outlier.shape = 2,
+    outlier.size = 1
   ) +
   scale_x_continuous(trans = "log10") +
   scale_y_discrete(limits = rev(levels(df_detected_by_category$Park))) +
   facet_grid(
-    primary_category~., 
-    switch = "y", 
+    primary_category ~ .,
+    switch = "y",
     labeller = as_labeller(primary_category_labels)
-    ) +
-  scale_color_manual(values = park_colors, guide = "none") +
-  scale_fill_manual(values = alpha(park_colors, 0.5), guide = "none") +
+  ) +
+  scale_color_manual(values = park_colors) +
+  scale_fill_manual(values = alpha(park_colors, 0.5)) +
   labs(
     y = "",
     title = "Distribution of quantifiable concentrations",
-    x = bquote("concentration in"~mu*"g"~kg^-1)
+    x = bquote("Concentration in" ~ mu * "g" ~ kg^-1)
   ) +
-  boxplot_quantification_theme 
+  boxplot_quantification_theme
 
+source("functions/ggplot_box_legend.R")
 boxplot_legend <- ggplot_box_legend()
 
-part <- barplot_quantified + boxplot_quantified
-
-design <- "abc \n abd"
-
-concentrations <- part + guide_area() + boxplot_legend +
+concentrations <- barplot_quantified +
+  boxplot_quantified +
+  boxplot_legend +
   plot_layout(
-    design = design,
+    design = "abc",
     guides = "collect",
-    widths = c(1.2, 4, 2.5),
-    heights = c(2, 1.4)
+    widths = c(1.2, 4, 2.5)
   ) &
-  theme(plot.background = element_blank())
+  theme(plot.background = element_blank(), legend.position = "none")
 
-ggsave("figure/substances_quantified.pdf", concentrations, width = 8, height = 8)
+ggsave(
+  "figure/substances_quantified.pdf",
+  concentrations,
+  width = 8,
+  height = 8
+)
