@@ -135,11 +135,12 @@ summarise_detection <- function(x) {
 summarise_censoring <- function(detected, value, threshold) {
   vals_sum <- sum(value, na.rm = TRUE)
   if (all(detected == "Not detected")) {
-    # The aggregated value is set as (near) zero with no uncertainty.
+    # The aggregated minimum value is set as (near) zero, the max value is the 
+    # sum of LOQs (the worst scenario)
     ret <- c(
       censored = "True zero",
       Value_min = 1e-6,
-      Value_max = 1e-6
+      Value_max = sum(threshold)
     )
   } else if (
     all(detected == "Quantified" | detected == "Not detected") &&

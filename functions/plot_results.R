@@ -50,7 +50,7 @@ plot_results <- function(
     ) +
     geom_point(
       data = df_filtered,
-      aes(x = df_filtered$Date_of_sample_collection, y  = 0),
+      aes(x = Date_of_sample_collection, y  = 0),
       shape = 1
     ) +
     labs(
