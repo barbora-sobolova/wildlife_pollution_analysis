@@ -33,8 +33,8 @@ park_labels <- c(
 park_colors <- c(
   "Bay_Wald" = "deepskyblue4",
   "Hainich" = "firebrick3",
-  "Saechs_Schw" = "darkgreen",
   "Hunsrueck" = "purple3",
+  "Saechs_Schw" = "darkgreen",
   "Jasmund" = "lightblue3",
   "Kellerwald" = "palegreen",
   "Eiffel" = "goldenrod1",

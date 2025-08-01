@@ -40,10 +40,10 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
       ordered = TRUE
     ),
     Park = factor(
-      Park, 
-      levels = c("Bay_Wald", "Hainich", "Hunsrueck", "Saechs_Schw", "Jasmund", 
-                 "Kellerwald", "Eiffel", "Vorpomm"), 
-      ordered = TRUE  # TRUE for displaying in a correct order in the mosaic plots
+      Park,
+      levels = names(park_labels),
+      # ordered = TRUE for displaying in a correct order in the mosaic plots
+      ordered = TRUE
     ),
     Sex = factor(Sex, levels = c("Male", "Female")),
     Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
@@ -52,17 +52,17 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
   )
 dat <- read_csv("data/clean_data.csv") %>%
    mutate(
-     Park = factor(
-       Park, 
-       levels = c("Bay_Wald", "Hainich", "Hunsrueck", "Saechs_Schw", 
-                  "Jasmund", "Kellerwald", "Eiffel", "Vorpomm"),
-       ordered = TRUE  # TRUE for displaying in a correct order in the boxplots
-       ),
      Sex = factor(Sex, levels = c("Male", "Female")),
      Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
      Species = factor(Species, levels = c("C. capreolus", "D. dama", "C. elaphus")),
      Season = factor(Season, levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24"))
    ) %>% # Convert the measurements to character to avoid problems when pivoting
+    Park = factor(
+      Park,
+      levels = names(park_labels),
+      # ordered = TRUE for displaying in a correct order in the boxplots
+      ordered = TRUE
+    ),
   mutate_at(vars(-Age, -Species, -Sex, -Season, -Park), as.character)
 
 # Prepare the data frame for the boxplots ======================================
