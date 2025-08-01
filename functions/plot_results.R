@@ -50,9 +50,9 @@ plot_results <- function(
     ) +
     geom_point(
       data = df_filtered,
-      aes(x = df_filtered$Date_of_sample_collection, y  = 0), 
+      aes(x = df_filtered$Date_of_sample_collection, y  = 0),
       shape = 1
-      )
+    ) +
     labs(
       x = "Date",
       title = "Penalized spline for the date variable (intercept included)",

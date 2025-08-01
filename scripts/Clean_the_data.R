@@ -176,7 +176,7 @@ check_age_categories(clean_data)
 # Drop the age entries indicated by the parks, as it's not needed anymore
 clean_data <- clean_data |> select(-"Age_as_indicated_by_Parks")
 check_complete_entries(clean_data)
-check_measured_chemicals_against_the_overview(
+check_measured_vs_overview(
   clean_data,
   chem_categories$Chemical
 )

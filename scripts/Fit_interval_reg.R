@@ -19,7 +19,7 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
       Detected_by_category,
       levels = c("Quantified", "Detected", "Not detected")
     ),
-    # Push the later dates one year back to close the gap between the data 
+    # Push the later dates one year back to close the gap between the data
     # points. 1. April seems to be a good cutoff point
     Date_of_sample_collection = as.Date(
       ifelse(
