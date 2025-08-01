@@ -77,52 +77,6 @@ df_quantified_by_category <- filter(
   ungroup() %>%
   mutate(Boxplot = nobs >= 5, placeholder = "placeholder")
 
-# Plot the quantified values as boxplots in time ===============================
-#
-# df_quantified_by_category <- df_quantified_by_category |>
-#   mutate(
-#     Month = floor_date(Date_of_sample_collection, unit = "month"),
-#     Park_month_interaction = interaction(Park, Month)
-#     )
-#
-# boxplots_in_time <- ggplot(
-#   df_quantified_by_category,
-#   aes(x = Month, y = Value_sum_by_category, group = Month)
-#   ) +
-#   scale_color_manual(values = park_colors) +
-#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE) +
-#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
-#   labs(x = "Month", y = "Concentration", title = "Concentration in time (outliers removed)")
-# ggsave("figure/concentration_seasonality.pdf", boxplots_in_time,
-#        width = 6, height = 10)
-#
-# anthropo_boxplot_in_time <- df_quantified_by_category |>
-#   filter(primary_category == "Anthropogenic pollution") |>
-#   ggplot(
-#     aes(x = Month, y = Value_sum_by_category, group = interaction(Month, Park),
-#         color = Park, fill = Park)
-#   ) +
-#   scale_color_manual(values = park_colors) +
-#   scale_fill_manual(values = park_colors) +
-#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE, width = 200,
-#                alpha = 0.5) +
-#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
-#   labs(x = "Month", y = "Concentration", title = "Concentration in time (outliers removed)")
-#
-#
-# pop_boxplot_in_time <- df_quantified_by_category |>
-#   filter(primary_category == "POP") |>
-#   ggplot(
-#     aes(x = Month, y = Value_sum_by_category, group = interaction(Month, Park),
-#         color = Park, fill = Park)
-#   ) +
-#   scale_color_manual(values = park_colors) +
-#   scale_fill_manual(values = park_colors) +
-#   geom_boxplot(staplewidth = 1, outliers = FALSE, varwidth = TRUE, width = 200,
-#                alpha = 0.5) +
-#   facet_wrap(~primary_category, scales = "free_y", nrow = 4) +
-#   labs(x = "Month", y = "Concentration", title = "POPs concentration in time (outliers removed)")
-
 # Create the data frames for the mosaic plots ==================================
 
 df_rectangles <- replicate(
