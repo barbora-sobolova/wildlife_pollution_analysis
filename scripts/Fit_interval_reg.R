@@ -10,6 +10,9 @@ theme_set(theme_bw())
 df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
   # Filter out an observation, where we have no date
   filter(!is.na(Date_of_sample_collection)) |>
+  # Filter out the first observation that is too far from the others and causes
+  # difficulties when fitting the model
+  filter(Date_of_sample_collection != as.Date("2024-05-29")) |>
   mutate(
     # Convert the categorical variables to factors to keep the levels in the
     # correct order everywhere
