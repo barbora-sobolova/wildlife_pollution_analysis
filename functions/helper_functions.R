@@ -140,6 +140,9 @@ summarise_censoring <- function(detected, value, threshold) {
     ret <- c(
       censored = "True zero",
       Value_min = 1e-6,
+      # Treat the non-detects just like the non-quantified values, because we
+      # do not have the limits of detection. As it stands, the model is not able
+      # to estimate some coefficients for the Industrial chemical category.
       Value_max = sum(threshold)
     )
   } else if (
