@@ -10,8 +10,6 @@ library("tidyverse")
 # There is sometimes another column in the Excel sheet, which summarizes whole
 # groups of chemicals. We do not include these in our range to load, since we
 # summarize the concentrations ourselves.
-data_path <- "data/Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx"
-
 data_positions <- list(
   PCBs = "PCBs!B12:S71",
   OC_Insecticides = "OC Insecticides!B12:T71",
@@ -25,7 +23,7 @@ raw_data_list <- vector("list", 4)
 for (k in seq_along(data_positions)) {
   # Load the excel files
   raw_data_list[[k]] <- read_excel(
-    data_path,
+    "data/Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx",
     range = data_positions[[k]],
     col_types = "text"
   )
@@ -45,7 +43,9 @@ for (k in seq_along(data_positions)) {
   raw_data_list[[k]] <- raw_data_list[[k]][-1, ]
 
   # Remove columns that we don't need. We should be left with sample numbers,
-  # date information, species and the chemical measurements.
+  # date information, species and the chemical measurements. Compared to the
+  # original deer data, we do not have the information about sex and age of the
+  # animals.
   raw_data_list[[k]] <- raw_data_list[[k]] |>
     select(
       -c(
@@ -104,7 +104,6 @@ raw_data <- purrr::reduce(
     # IMPORTANT
     # The following chemicals are not in the overview of the original data.
     # Does it mean that they were not discovered, or not measured at all?
-    # For now, let us assume that they were measured, but not discovered.
     "gamma-HCH" = "gamma-HCH (Lindane) [µg kg-1]",
     "Permethrin" = "Permethrin [µg kg-1]",
     "DDT (p,p' and o,p')" = "DDT (p,p' and o,p') [µg kg-1]",
