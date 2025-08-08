@@ -3,9 +3,7 @@ library("tidyverse")
 theme_set(theme_bw())
 source("functions/custom_mosaic_plot_function.R")
 source("functions/ggplot_box_legend.R")
-source("scripts/plot_elements.R")
-
-# Functions for nice plotting ==================================================
+source("functions/plot_elements.R")
 
 # Function converting the rgb color codes to hex for the color choice
 # Can be deleted as soon as all colors are determined
@@ -17,6 +15,19 @@ rgb2hex <- function(rgbmat) {
   # Apply the function
   sapply(1:ncol(rgbmat), process_column)
 }
+
+# Get the plot elements ========================================================
+primary_category_labels <- get_primary_category_labels()
+park_labels <- get_park_labels()
+park_colors <- get_park_colors()
+barplot_colors <- get_barplot_colors()
+barplot_desciptive_theme <- get_barplot_desciptive_theme()
+sex_mosaic_colors <- get_sex_mosaic_colors()
+age_mosaic_colors <- get_age_mosaic_colors()
+species_mosaic_colors <- get_species_mosaic_colors()
+mosaicplot_theme <- get_mosaicplot_theme()
+barplot_detection_theme <- get_barplot_detect_theme()
+boxplot_quantification_theme <- get_boxplot_quant_theme()
 
 # Read the cleaned data and convert categories to factors ======================
 

@@ -135,7 +135,7 @@ summarise_detection <- function(x) {
 summarise_censoring <- function(detected, value, threshold) {
   vals_sum <- sum(value, na.rm = TRUE)
   if (all(detected == "Not detected")) {
-    # The aggregated minimum value is set as (near) zero, the max value is the 
+    # The aggregated minimum value is set as (near) zero, the max value is the
     # sum of LOQs (the worst scenario)
     ret <- c(
       censored = "Non-detect",
@@ -202,8 +202,8 @@ extract_reg_coeffs <- function(
           "reference",
           as.character(cut(p_val, breaks = c(0, 0.01, 0.05, 0.1, 1)))
         ),
-        # `p_val_cat_linewidth` from the "plot_elements.R" file
-        levels = names(p_val_cat_linewidth)
+        # `get_p_val_cat_linewidth()` from the "plot_elements.R" file
+        levels = names(get_p_val_cat_linewidth())
       )
     )
 }

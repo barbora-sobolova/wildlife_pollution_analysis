@@ -1,7 +1,7 @@
 library("tidyverse")
 library("survival")
 library("patchwork")
-source("scripts/plot_elements.R")
+source("functions/plot_elements.R")
 source("functions/helper_functions.R")
 source("functions/plot_results.R")
 theme_set(theme_bw())
@@ -17,7 +17,7 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
     # Convert the categorical variables to factors to keep the levels in the
     # correct order everywhere
     Age = factor(Age, levels = c("Calf", "Subadult", "Adult")),
-    Park = factor(Park, levels = names(park_colors)),
+    Park = factor(Park, levels = names(get_park_colors())),
     Detected_by_category = factor(
       Detected_by_category,
       levels = c("Quantified", "Detected", "Not detected")
@@ -44,7 +44,6 @@ category_names <- unique(df_detected_by_category$primary_category)
 mods_by_category <- plt_by_category <-
   vector(mode = "list", length = length(category_names))
 names(mods_by_category) <- category_names
-
 
 for (k in seq_along(category_names)) {
   # Filter only the part corresponding to the given pollutant category
@@ -74,12 +73,12 @@ for (k in seq_along(category_names)) {
   plt_by_category[[k]] <- plot_results(
     df_filtered,
     mods_by_category[[k]],
-    names(primary_category_labels)[k]
+    names(get_primary_category_labels())[k]
   )
   ggsave(
     paste0(
       "figure/Results_visualization_",
-      names(primary_category_labels)[k],
+      names(get_primary_category_labels())[k],
       ".pdf"
     ),
     plt_by_category[[k]],
