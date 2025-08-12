@@ -19,7 +19,7 @@ wb <- save_results_as_xls(results$fitted_mods)
 openxlsx::saveWorkbook(wb, "tables/model_summaries.xlsx", overwrite = TRUE)
 # Save the results into a .csv file
 results_csv <- save_results_as_csv(results$fitted_mods)
-write_csv2(results_csv, "tables/model_summaries.csv")
+write_csv(results_csv, "tables/model_summaries.csv")
 
 # Diagnostics
 fits_vs_residuals <- results$fitted_mods |>

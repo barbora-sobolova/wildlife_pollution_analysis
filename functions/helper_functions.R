@@ -221,7 +221,6 @@ save_results_as_xls <- function(fitted_model_list) {
       mutate(
         across(c("Value", "Std. Error", "p"), function(x) round(x, digits = 4))
       )
-      # Calculate p-values
     sheet_name <- names(fitted_model_list)[k]
     openxlsx::addWorksheet(wb, sheet_name)
     openxlsx::writeData(wb, sheet = sheet_name, coef_table, rowNames = TRUE)
@@ -234,7 +233,7 @@ save_results_as_csv <- function(fitted_model_list) {
     lapply(summary) |>
     lapply(function(x) x$table) |>
     lapply(as.data.frame) |>
-    lapply(rownames_to_column, var = "Coefficient") |>
+    lapply(tibble::rownames_to_column, var = "Coefficient") |>
     bind_rows(.id = "category") |>
     mutate(
       across(c("Value", "Std. Error", "p"), function(x) round(x, digits = 4))
