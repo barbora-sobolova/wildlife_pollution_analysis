@@ -9,17 +9,17 @@ plot_results <- function(
   # List to store the plots
   plt <- vector("list", 6)
   names(plt) <- c("spline", "reg_coeffs", "boxplot", "barplot", "composite")
-  
+
   # Extract the coefficients and standard errors
   coeffs <- coefficients(fitted_survreg_model)
   summ <- summary(fitted_survreg_model)
-  
+
   # Get the plot elements ======================================================
   park_labels <- get_park_labels(non_park_comparison)
   park_colors <- get_park_colors(non_park_comparison)
 
   # Display the spline =========================================================
-  
+
   # For calculating the fitted spline curve
   newdata <- data.frame(
     Date_numeric = seq(
@@ -47,14 +47,14 @@ plot_results <- function(
   # Elements of the plot of the categorical coefficients =======================
   x_labels_coeffs <- park_labels
   names(x_labels_coeffs) <- names(park_labels)
-  
+
   df_park <- extract_reg_coeffs(
     "Park",
     levels(df_filtered$Park),
     coeffs,
     summ
   )
-  
+
   # If we compare with the roe deer data from non-park localities, we have to
   # drop the age covariate
   if (non_park_comparison) {
@@ -79,7 +79,7 @@ plot_results <- function(
       empty = "empty"
     )
     df_coeffs <- rbind(df_park, df_empty, df_age)
-    
+  
     x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
   }

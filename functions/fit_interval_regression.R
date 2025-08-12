@@ -6,7 +6,7 @@ fit_interval_reg <- function(
   non_park_comparison = FALSE
 ) {
   # Load the cleaned data ======================================================
-  
+
   # We remove certain observations inside this function, when though the task is
   # quite specific, because it's done for both the main analysis and the
   # comparison with the roe deer data.
