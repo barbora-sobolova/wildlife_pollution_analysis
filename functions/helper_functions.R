@@ -224,3 +224,28 @@ save_results_as_xls <- function(fitted_model_list) {
   }
   wb
 }
+
+save_results_as_image <- function(plot_list, non_park_comparison = FALSE) {
+  # Loop through models and add each summary to a sheet
+  for (k in seq_along(plot_list)) {
+    if (non_park_comparison) {
+      file_name <- paste0(
+        "figure/Results_visualization_non_park_comparison_",
+        names(plot_list)[k],
+        ".pdf"
+      )
+    } else {
+      file_name <- paste0(
+        "figure/Results_visualization_",
+        names(plot_list)[k],
+        ".pdf"
+      )
+    }
+    ggsave(
+      file_name,
+      plot_list[[k]],
+      width = 10,
+      height = 9
+    )
+  }
+}
