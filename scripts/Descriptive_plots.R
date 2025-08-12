@@ -24,9 +24,6 @@ barplot_colors <- get_barplot_colors()
 sex_mosaic_colors <- get_sex_mosaic_colors()
 age_mosaic_colors <- get_age_mosaic_colors()
 species_mosaic_colors <- get_species_mosaic_colors()
-mosaicplot_theme <- get_mosaicplot_theme()
-barplot_detection_theme <- get_barplot_detect_theme()
-boxplot_quantification_theme <- get_boxplot_quant_theme()
 
 # Read the cleaned data and convert categories to factors ======================
 
@@ -204,7 +201,7 @@ mosaic_sex <- ggplot(
       override.aes = list(fill = sex_mosaic_colors$Female)
     )
   ) +
-  mosaicplot_theme
+  get_mosaicplot_theme()
 ggsave("figure/mosaic_sex.pdf", mosaic_sex, width = 12, height = 8)
 
 
@@ -241,7 +238,7 @@ mosaic_species <- ggplot(
       override.aes = list(fill = species_mosaic_colors$`D. dama`)
     )
   ) +
-  mosaicplot_theme
+  get_mosaicplot_theme()
 ggsave("figure/mosaic_species.pdf", mosaic_species, width = 10, height = 8)
 
 # Mosaic plot by age
@@ -286,7 +283,7 @@ mosaic_age <- ggplot(
       override.aes = list(fill = age_mosaic_colors$Adult)
     )
   ) +
-  mosaicplot_theme
+  get_mosaicplot_theme()
 ggsave("figure/mosaic_age.pdf", mosaic_age, width = 12, height = 8)
 
 # Detection box- and barplots ==================================================
@@ -324,7 +321,7 @@ barplot_quantified <- ggplot(
     title = "Occurence",
     x = "\nProportion exactly quantified\nor qualitatively detected"
   ) +
-  barplot_detection_theme
+  get_barplot_detect_theme()
 
 boxplot_quantified <- ggplot(
   df_quantified_by_category,
@@ -365,7 +362,7 @@ boxplot_quantified <- ggplot(
     title = "Distribution of quantifiable concentrations",
     x = bquote("Concentration in" ~ mu * "g" ~ kg^-1)
   ) +
-  boxplot_quantification_theme
+  get_boxplot_quant_theme()
 
 source("functions/ggplot_box_legend.R")
 boxplot_legend <- ggplot_box_legend()
