@@ -128,7 +128,7 @@ get_age_mosaic_colors <- function() {
 # Define plot themes ===========================================================
 
 # Theme of the descriptive barplots
-get_barplot_desciptive_theme <- function() {
+get_barplot_descriptive_theme <- function() {
   theme(
     legend.position = "top",
     panel.grid.major.x = element_blank(),

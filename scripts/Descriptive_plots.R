@@ -21,7 +21,6 @@ primary_category_labels <- get_primary_category_labels()
 park_labels <- get_park_labels()
 park_colors <- get_park_colors()
 barplot_colors <- get_barplot_colors()
-barplot_desciptive_theme <- get_barplot_desciptive_theme()
 sex_mosaic_colors <- get_sex_mosaic_colors()
 age_mosaic_colors <- get_age_mosaic_colors()
 species_mosaic_colors <- get_species_mosaic_colors()
@@ -147,14 +146,14 @@ for (covariate in names(barplots_covariates)) {
     ) +
     scale_x_discrete(labels = park_labels) +
     labs(y = "", title = covariate) +
-    barplot_desciptive_theme
+    get_barplot_descriptive_theme()
 }
 barplot_season <- ggplot(dat, aes(x = Park, fill = Season)) +
   geom_bar(position = position_stack(), width = 0.90) +
   scale_fill_manual(values = barplot_colors$Season) +
   scale_x_discrete(labels = park_labels) +
   labs(y = "", title = "Season of sample collection") +
-  barplot_desciptive_theme
+  get_barplot_descriptive_theme()
 
 barplots <- barplot_season +
   barplots_covariates$Sex +
