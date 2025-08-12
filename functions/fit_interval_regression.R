@@ -36,11 +36,12 @@ fit_interval_reg <- function(
   # quite specific, because it's done for both the main analysis and the
   # comparison with the roe deer data.
   df_detected_by_category <- df_detected_by_category |>
+    # Observation Z91 was collected on 29.05.2024, which is approx. 2 months 
+    # before all other observations. This creates a gap in the time covariate,
+    # better continue without it.
+    filter(Sample_number != "Z91") |> 
     # Filter out observations, where we have no date. This should be only A60.
-    filter(!is.na(Date_of_sample_collection)) |>
-    # Filter out the first observation in time, which is too far away from the
-    # others. This is Z91.
-    filter(Date_of_sample_collection != as.Date("2024-05-29")) |>
+    filter(Sample_number != "A60") |> 
     mutate(
       # Convert the categorical variables to factors to keep the levels in the
       # correct order everywhere
