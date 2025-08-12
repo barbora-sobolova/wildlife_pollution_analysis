@@ -5,6 +5,31 @@ fit_interval_reg <- function(
   df_detected_by_category,
   non_park_comparison = FALSE
 ) {
+  # Validate input (suggested by CodeRabbit) ===================================
+  if (
+    !is.data.frame(df_detected_by_category) ||
+      nrow(df_detected_by_category) == 0
+  ) {
+    stop(
+      "fit_interval_reg: 'df_detected_by_category' must be a non-empty data.frame"  # nolint
+    )
+  }
+  required_cols <- c(
+    "Date_of_sample_collection",
+    "Park",
+    "Detected_by_category",
+    "primary_category",
+    "Value_min",
+    "Value_max"
+  )
+  missing_cols <- setdiff(required_cols, names(df_detected_by_category))
+  if (length(missing_cols) > 0) {
+    stop(
+      "fit_interval_reg: missing required columns: ",
+      paste(missing_cols, collapse = ", ")
+    )
+  }
+
   # Load the cleaned data ======================================================
 
   # We remove certain observations inside this function, when though the task is
