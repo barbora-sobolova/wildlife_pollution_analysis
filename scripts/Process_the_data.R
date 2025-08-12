@@ -32,8 +32,12 @@ chem_categories_subset <- rbind(chem_categories_deer, chem_categories_roe)
 # Combine both datasets
 dat <- bind_rows(dat_deer, dat_roe) |>
   select(
-    c("Park", "Sample_number", "Date_of_sample_collection") |
+    c(
+      "Park",
+      "Sample_number",
+      "Date_of_sample_collection",
       chem_categories_subset$Chemical
+    )
   )
 
 # Process and write

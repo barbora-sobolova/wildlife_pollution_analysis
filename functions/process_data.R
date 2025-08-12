@@ -1,7 +1,15 @@
-# Function processing the concentration measurements into values by category.
-# Main outputs is the column indicating, whether a category was "Quantified",
-# "Detected", or "Not detected" and the possible range, where the measurement
-# is, i.e. the interval bounds between the best-case and worst-case scenario.
+#' Process concentration measurements into values by category
+#'
+#' @param dat A data frame containing concentration measurements with metadata
+#'   columns `Park`, `Sample_number`, `Species`, `Sex`, `Age`,
+#'   `Date_of_sample_collection` and `Season`
+#' @param chem_categories A data frame with columns 'Chemical',
+#'   'primary_category', and 'Detection_threshold'
+#' @return A data frame with aggregated measurements by category including
+#'    detection status
+#' @details Main outputs include overall detection status ("Quantified",
+#'    "Detected", "Not detected") and interval bounds for best/worst-case
+#'    scenarios
 process_data <- function(dat, chem_categories) {
   # Reshape the data to a long format
   dat_long <- dat |>
@@ -39,7 +47,19 @@ process_data <- function(dat, chem_categories) {
   # Assign the category to the chemicals. `chem_categories` contain everything
   # needed.
   dat_long <- left_join(dat_long, chem_categories, by = "Chemical")
-
+  
+  # Check for unmatched chemicals
+  unmatched <- dat_long |>
+    filter(is.na(primary_category)) |>
+    pull(Chemical) |>
+    unique()
+  if (length(unmatched) > 0) {
+    warning(paste(
+      "Unmatched chemicals found:",
+      paste(unmatched, collapse = ", ")
+    ))
+  }
+  
   # Handle the detection of chemicals by category
   df_detected_by_category <- dat_long |>
     group_by(
