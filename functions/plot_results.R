@@ -79,7 +79,7 @@ plot_results <- function(
       empty = "empty"
     )
     df_coeffs <- rbind(df_park, df_empty, df_age)
-  
+
     x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
   }
