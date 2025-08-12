@@ -217,7 +217,7 @@ save_results_as_xls <- function(fitted_model_list) {
   for (k in seq_along(fitted_model_list)) {
     model_summary <- summary(fitted_model_list[[k]])
     coef_table <- as.data.frame(model_summary$table) |>
-      select(-z) |>
+      select(-tidyselect::any_of("z")) |>
       mutate(
         across(c("Value", "Std. Error", "p"), function(x) round(x, digits = 4))
       )
@@ -238,7 +238,7 @@ save_results_as_csv <- function(fitted_model_list) {
     mutate(
       across(c("Value", "Std. Error", "p"), function(x) round(x, digits = 4))
     ) |>
-    select(-z)
+    select(-tidyselect::any_of("z"))
 }
 
 save_results_as_image <- function(plot_list, non_park_comparison = FALSE) {
