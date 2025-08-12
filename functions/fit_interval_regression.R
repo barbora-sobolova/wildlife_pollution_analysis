@@ -121,7 +121,7 @@ fit_interval_reg <- function(
     plt_by_category[[k]] <- plot_results(
       df_filtered,
       mods_by_category[[k]],
-      names(get_primary_category_labels())[k],
+      category_names[k],
       non_park_comparison = non_park_comparison
     )
   }
