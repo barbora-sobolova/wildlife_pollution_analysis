@@ -144,7 +144,7 @@ get_barplot_descriptive_theme <- function() {
   )
 }
 
-# Theme of the descriptive mosiaic plots
+# Theme of the descriptive mosaic plots
 get_mosaicplot_theme <- function() {
   theme(
     plot.title = element_text(hjust = 0.5),
