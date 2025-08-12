@@ -27,6 +27,8 @@ fit_interval_reg <- function(
       # Push the dates from 2024 one year back to close the gap between the data
       # points. 1. April seems to be a good cutoff point. The roe deer data from
       # 2021 will be pushed forward by 2 years.
+      # This normalization helps align seasonal patterns across different years
+      # for more consistent model fitting.
       Date_of_sample_collection = as.Date(
         case_when(
           Date_of_sample_collection > as.Date("2024-04-01") ~
