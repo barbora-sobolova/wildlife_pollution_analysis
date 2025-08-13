@@ -31,16 +31,10 @@ fit_interval_reg <- function(
     )
   }
 
-  # Load the cleaned data ======================================================
-
   # We remove certain observations inside this function, even though the task is
   # quite specific, because it's done for both the main analysis and the
   # comparison with the roe deer data.
   df_detected_by_category <- df_detected_by_category |>
-    # Observation Z91 was collected on 29.05.2024, which is approx. 2 months
-    # before all other observations. This creates a gap in the time covariate,
-    # better continue without it.
-    filter(Sample_number != "Z91") |>
     # Filter out observations, where we have no date. This should be only A60.
     filter(Sample_number != "A60") |>
     mutate(
@@ -51,20 +45,10 @@ fit_interval_reg <- function(
         Detected_by_category,
         levels = c("Quantified", "Detected", "Not detected")
       ),
-      # Push the dates from 2024 one year back to close the gap between the data
-      # points. 1. April seems to be a good cutoff point. The roe deer data from
-      # 2021 will be pushed forward by 2 years.
+      # Place the dates from different years into a single year cycle.
       # This normalization helps align seasonal patterns across different years
       # for more consistent model fitting.
-      Date_of_sample_collection = as.Date(
-        case_when(
-          Date_of_sample_collection > as.Date("2024-04-01") ~
-            Date_of_sample_collection - 366,  # 2024 was a leap year
-          Date_of_sample_collection <= as.Date("2021-07-09") ~
-            Date_of_sample_collection + 2 * 365,  # For the roe deer data only
-          .default = Date_of_sample_collection
-        )
-      ),
+      Date_of_sample_collection = unify_year(Date_of_sample_collection),
       # Convert dates to numeric values
       Date_numeric = as.numeric(Date_of_sample_collection) -
         min(as.numeric(Date_of_sample_collection))
@@ -75,7 +59,7 @@ fit_interval_reg <- function(
     mutate(Boxplot = nobs >= 5)
 
   # Check for unexpected NA dates after removing known problematic samples
-  if (any(is.na(.$Date_of_sample_collection))) {
+  if (any(is.na(df_detected_by_category$Date_of_sample_collection))) {
     warning(
       "Unexpected NA values found in Date_of_sample_collection after filtering known samples. Dataset may need re-examination."  # nolint
     )
