@@ -15,6 +15,7 @@ fit_interval_reg <- function(
     )
   }
   required_cols <- c(
+    "Sample_number",
     "Date_of_sample_collection",
     "Park",
     "Detected_by_category",
@@ -32,16 +33,16 @@ fit_interval_reg <- function(
 
   # Load the cleaned data ======================================================
 
-  # We remove certain observations inside this function, when though the task is
+  # We remove certain observations inside this function, even though the task is
   # quite specific, because it's done for both the main analysis and the
   # comparison with the roe deer data.
   df_detected_by_category <- df_detected_by_category |>
-    # Observation Z91 was collected on 29.05.2024, which is approx. 2 months 
+    # Observation Z91 was collected on 29.05.2024, which is approx. 2 months
     # before all other observations. This creates a gap in the time covariate,
     # better continue without it.
-    filter(Sample_number != "Z91") |> 
+    filter(Sample_number != "Z91") |>
     # Filter out observations, where we have no date. This should be only A60.
-    filter(Sample_number != "A60") |> 
+    filter(Sample_number != "A60") |>
     mutate(
       # Convert the categorical variables to factors to keep the levels in the
       # correct order everywhere
@@ -68,9 +69,9 @@ fit_interval_reg <- function(
       Date_numeric = as.numeric(Date_of_sample_collection) -
         min(as.numeric(Date_of_sample_collection))
     ) |>
-    group_by(Park, primary_category) %>%
-    mutate(nobs = n()) %>%
-    ungroup() %>%
+    group_by(Park, primary_category) |>
+    mutate(nobs = n()) |>
+    ungroup() |>
     mutate(Boxplot = nobs >= 5)
 
   # Check for unexpected NA dates after removing known problematic samples
@@ -108,8 +109,8 @@ fit_interval_reg <- function(
       df_detected_by_category,
       primary_category == category_names[k]
     )
-    response_boundaries <- df_filtered %>%
-      dplyr::select(Value_min, Value_max) %>%
+    response_boundaries <- df_filtered |>
+      dplyr::select(Value_min, Value_max) |>
       as.matrix()
     response_surv <- Surv(
       time = response_boundaries[, 1],
