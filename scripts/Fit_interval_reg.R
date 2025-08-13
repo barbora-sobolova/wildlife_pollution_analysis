@@ -30,7 +30,7 @@ write_csv(results_csv, "tables/model_summaries.csv")
 
 # Filter out problematic observations
 df_roe_detected_by_category <- read_csv(
-  "data/data_roe_by_pollutant_category.csv"
+  "data/data_non_park_comparison_by_pollutant_category.csv"
 )
 
 results_roe <- fit_interval_reg(
