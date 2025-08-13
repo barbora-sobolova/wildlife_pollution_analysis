@@ -9,7 +9,7 @@ theme_set(theme_bw())
 
 # Model the main deer data =====================================================
 
-# Load the data and filter out problematic observations
+# Load the data
 df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv")
 
 # Fit the model
@@ -28,7 +28,6 @@ write_csv(results_csv, "tables/model_summaries.csv")
 
 # Secondary analysis: Comparison with the roe deer data ========================
 
-# Filter out problematic observations
 df_roe_detected_by_category <- read_csv(
   "data/data_non_park_comparison_by_pollutant_category.csv"
 )
