@@ -1,6 +1,20 @@
-# Function fitting the interval regression model for all available pollutant
-# categories. (This should be 8 for the deer data, 2 for the comparison with the
-# roe data.)
+#' Fit interval censored regression model by category
+#'
+#' @description
+#' This function fits the interval regression model for all available pollutant
+#' categories. (This should be 8 for the deer data, 2 for the comparison with
+#' the roe deer data.)
+#'
+#' @param df_detected_by_category A data frame with with the interval bounds of
+#'    the measurements required columns `Value_min` and `Value_max`. Required
+#'    covariate columns are `Park` and `Date_of_sample_collection`. For the main
+#'    analysis, covariate `Age` is also required. Metadata columns are
+#'    `Sample_number`, `primary_category` and `Detected_by_category`
+#' @param non_park_comparison A logical flag indicating, whether the function
+#'    should perform the main analysis, or the secondary analysis using the roe
+#'    deer data from outside of national parks (`non_park_comparison = TRUE`)
+#' @return A list with 2 components: list of the fitted models and list of the
+#'    plots
 fit_interval_reg <- function(
   df_detected_by_category,
   non_park_comparison = FALSE
