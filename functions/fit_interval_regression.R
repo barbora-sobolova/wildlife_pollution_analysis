@@ -72,6 +72,14 @@ fit_interval_reg <- function(
     mutate(nobs = n()) %>%
     ungroup() %>%
     mutate(Boxplot = nobs >= 5)
+
+  # Check for unexpected NA dates after removing known problematic samples
+  if (any(is.na(.$Date_of_sample_collection))) {
+    warning(
+      "Unexpected NA values found in Date_of_sample_collection after filtering known samples. Dataset may need re-examination."  # nolint
+    )
+  }
+
   if (!non_park_comparison) {
     # For the main deer data convert also the age variable to factor.
     df_detected_by_category <- df_detected_by_category |>
