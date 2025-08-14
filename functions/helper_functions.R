@@ -134,35 +134,10 @@ summarise_detection <- function(x) {
 # threshold.
 summarise_censoring <- function(detected, value, threshold) {
   vals_sum <- sum(value, na.rm = TRUE)
-  if (all(detected == "Not detected")) {
-    # The aggregated minimum value is set as (near) zero, the max value is the
-    # sum of LOQs (the worst scenario)
-    ret <- c(
-      Value_min = 1e-6,
-      # Treat the non-detects just like the non-quantified values, because we
-      # do not have the limits of detection. As it stands, the model is not able
-      # to estimate some coefficients for the Industrial chemical category.
-      Value_max = sum(threshold)
-    )
-  } else if (
-    all(detected == "Quantified" | detected == "Not detected") &&
-      !all(detected == "Not detected")
-  ) {
-    # The aggregated value of the detected part lies between (near) 0 and the
-    # sum of thresholds (the part with the non-detects). Then the quantified
-    # part is added to both thresholds.
-    ret <- c(
-      Value_min = vals_sum,
-      Value_max = vals_sum + sum(threshold[detected == "Not detected"])
-    )
-  } else if (any(detected == "Detected")) {
-    # The aggregated value of the detected part lies between (near) 0 and the
-    # sum of thresholds. Then the quantified part is added to both thresholds.
-    ret <- c(
-      Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
-      Value_max = vals_sum + sum(threshold[detected == "Detected"])
-    )
-  }
+  ret <- c(
+    Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
+    Value_max = vals_sum + sum(threshold[detected != "Quantified"])
+  )
   ret
 }
 
