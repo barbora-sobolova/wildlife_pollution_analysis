@@ -104,9 +104,21 @@ rename_columns <- function(x) {
 
 # Functions for data processing ================================================
 
-# Function determining, whether a pollutant category was quantified, detected,
-# or not detected. Input is a character vector of detection indicators for
-# individual chemical.
+#' Function determining the overall detection status of a chemical category
+#'
+#' @param x A character vector of possible values "Not detected", "Detected",
+#'   "Quantified" for individual chemicals
+#' @return A string indicating the aggregated status of "Not detected",
+#'   "Detected" and "Quantified" for the whole category of chemical substances
+#' @details Overall detection status:
+#'    \begin{itemize}
+#'      \item "Quantified": At least one sample in a category contains a
+#'      quantified value.
+#'      \item "Detected": No sample contains a quantified value and at least one
+#'      sample in a category contains a detected value under the quantification
+#'      limit.
+#'      \item "Not detected": All samples are non-detects.
+#'    \end{itemize}
 summarise_detection <- function(x) {
   if (all(x == "Not detected")) {
     # Category was not detected, when no chemicals from the category were
