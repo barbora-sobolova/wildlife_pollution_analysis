@@ -149,16 +149,17 @@ summarise_censoring <- function(detected, value, threshold) {
     all(detected == "Quantified" | detected == "Not detected") &&
       !all(detected == "Not detected")
   ) {
-    # The aggregated value is a sum of the quantified values with no
-    # uncertainty. Not detected values are treated as zeros.
+    # The aggregated value of the detected part lies between (near) 0 and the
+    # sum of thresholds (the part with the non-detects). Then the quantified
+    # part is added to both thresholds.
     ret <- c(
       censored = "Fully quantified",
       Value_min = vals_sum,
-      Value_max = vals_sum
+      Value_max = vals_sum + sum(threshold[detected == "Not detected"])
     )
   } else if (any(detected == "Detected")) {
-    # The aggregated value of the detected part lies between 0 and the sum of
-    # thresholds. Then the quantified part is added.
+    # The aggregated value of the detected part lies between (near) 0 and the
+    # sum of thresholds. Then the quantified part is added to both thresholds.
     ret <- c(
       censored = "Left censored",
       Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
