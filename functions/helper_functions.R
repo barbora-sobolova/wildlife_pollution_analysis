@@ -138,7 +138,6 @@ summarise_censoring <- function(detected, value, threshold) {
     # The aggregated minimum value is set as (near) zero, the max value is the
     # sum of LOQs (the worst scenario)
     ret <- c(
-      censored = "Non-detect",
       Value_min = 1e-6,
       # Treat the non-detects just like the non-quantified values, because we
       # do not have the limits of detection. As it stands, the model is not able
@@ -153,7 +152,6 @@ summarise_censoring <- function(detected, value, threshold) {
     # sum of thresholds (the part with the non-detects). Then the quantified
     # part is added to both thresholds.
     ret <- c(
-      censored = "Fully quantified",
       Value_min = vals_sum,
       Value_max = vals_sum + sum(threshold[detected == "Not detected"])
     )
@@ -161,7 +159,6 @@ summarise_censoring <- function(detected, value, threshold) {
     # The aggregated value of the detected part lies between (near) 0 and the
     # sum of thresholds. Then the quantified part is added to both thresholds.
     ret <- c(
-      censored = "Left censored",
       Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
       Value_max = vals_sum + sum(threshold[detected == "Detected"])
     )
