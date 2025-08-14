@@ -416,12 +416,12 @@ POP,Saechs_Schw,E 57,2024-10-29,5.856246808364251,Left censored,5.85624680836425
 POP,Saechs_Schw,E 58,2024-11-08,1.28196001702171,Left censored,1.28196001702171,5.28196001702171,Quantified
 POP,Saechs_Schw,E 59,2024-11-21,6.43184640600657,Left censored,6.43184640600657,8.43184640600657,Quantified
 POP,Saechs_Schw,E 60,2024-12-18,1.34419194267576,Left censored,1.34419194267576,5.34419194267576,Quantified
-POP,Saechs_Schw,E 61,2024-12-11,5.05584900694561,Fully quantified,5.05584900694561,5.05584900694561,Quantified
+POP,Saechs_Schw,E 61,2024-12-11,5.05584900694561,Fully quantified,5.05584900694561,18.0558490069456,Quantified
 POP,Saechs_Schw,E 62,2024-12-11,1.50785769417224,Left censored,1.50785769417224,4.50785769417224,Quantified
 POP,Saechs_Schw,E 63,2024-12-17,1.15996465274939,Left censored,1.15996465274939,4.15996465274939,Quantified
 POP,Saechs_Schw,E 64,2024-12-18,1.2702525081915,Left censored,1.2702525081915,5.2702525081915,Quantified
 POP,Saechs_Schw,E 65,2024-12-18,1.05141534025236,Left censored,1.05141534025236,4.05141534025236,Quantified
-POP,Saechs_Schw,E 66,2025-01-16,5.33423611765295,Fully quantified,5.33423611765295,5.33423611765295,Quantified
+POP,Saechs_Schw,E 66,2025-01-16,5.33423611765295,Fully quantified,5.33423611765295,18.3342361176529,Quantified
 POP,Saechs_Schw,E 67,2025-01-29,1.22518976765906,Left censored,1.22518976765906,5.22518976765906,Quantified
 POP,Saechs_Schw,E 68,2025-01-30,3.72360113864285,Left censored,3.72360113864285,5.72360113864285,Quantified
 POP,Saechs_Schw,E 69,2025-01-21,4.32703038036545,Left censored,4.32703038036545,6.32703038036545,Quantified
@@ -501,7 +501,7 @@ POP,Vorpomm,F48,2023-12-08,0,Left censored,1e-06,1,Detected
 POP,Vorpomm,F49,2023-12-08,0,Left censored,1e-06,4,Detected
 POP,Vorpomm,F50,2023-11-24,2.3738,Left censored,2.3738,8.3738,Quantified
 Pesticide,Bay_Wald,A01,2023-12-11,0,Non-detect,1e-06,9,Not detected
-Pesticide,Bay_Wald,A03,2024-01-30,1.5,Fully quantified,1.5,1.5,Quantified
+Pesticide,Bay_Wald,A03,2024-01-30,1.5,Fully quantified,1.5,9.5,Quantified
 Pesticide,Bay_Wald,A05,2024-01-31,0,Left censored,1e-06,1,Detected
 Pesticide,Bay_Wald,A06,2023-12-27,0,Non-detect,1e-06,9,Not detected
 Pesticide,Bay_Wald,A07,2024-01-25,0,Non-detect,1e-06,9,Not detected
@@ -509,7 +509,7 @@ Pesticide,Bay_Wald,A08,2024-01-30,1.3,Left censored,1.3,2.3,Quantified
 Pesticide,Bay_Wald,A09,2023-12-05,0,Left censored,1e-06,1,Detected
 Pesticide,Bay_Wald,A100,2024-12-09,0,Left censored,1e-06,1,Detected
 Pesticide,Bay_Wald,A13,2024-01-25,2,Left censored,2,3,Quantified
-Pesticide,Bay_Wald,A19,2024-01-30,1.9,Fully quantified,1.9,1.9,Quantified
+Pesticide,Bay_Wald,A19,2024-01-30,1.9,Fully quantified,1.9,9.9,Quantified
 Pesticide,Bay_Wald,A20,2023-12-29,0,Non-detect,1e-06,9,Not detected
 Pesticide,Bay_Wald,A23,2024-01-28,0,Non-detect,1e-06,9,Not detected
 Pesticide,Bay_Wald,A39,2024-01-31,0,Non-detect,1e-06,9,Not detected
@@ -629,14 +629,14 @@ Pesticide,Hainich,C08,2023-11-18,0,Non-detect,1e-06,9,Not detected
 Pesticide,Hainich,C09,2024-01-13,0,Non-detect,1e-06,9,Not detected
 Pesticide,Hainich,C10,2023-12-05,0,Left censored,1e-06,2,Detected
 Pesticide,Hainich,C100,2024-09-25,0,Non-detect,1e-06,9,Not detected
-Pesticide,Hainich,C11,2023-12-05,2.4893,Fully quantified,2.4893,2.4893,Quantified
+Pesticide,Hainich,C11,2023-12-05,2.4893,Fully quantified,2.4893,9.4893,Quantified
 Pesticide,Hainich,C12,2023-11-28,0,Non-detect,1e-06,9,Not detected
 Pesticide,Hainich,C13,2023-12-05,0,Left censored,1e-06,2,Detected
 Pesticide,Hainich,C14,2023-12-05,0,Non-detect,1e-06,9,Not detected
 Pesticide,Hainich,C15,2023-11-14,0,Non-detect,1e-06,9,Not detected
 Pesticide,Hainich,C16,2023-11-14,0,Non-detect,1e-06,9,Not detected
-Pesticide,Hainich,C17,2023-11-28,28.8448,Fully quantified,28.8448,28.8448,Quantified
-Pesticide,Hainich,C18,2023-12-05,14.6398,Fully quantified,14.6398,14.6398,Quantified
+Pesticide,Hainich,C17,2023-11-28,28.8448,Fully quantified,28.8448,35.8448,Quantified
+Pesticide,Hainich,C18,2023-12-05,14.6398,Fully quantified,14.6398,21.6398,Quantified
 Pesticide,Hainich,C19,2023-11-14,0,Left censored,1e-06,1,Detected
 Pesticide,Hainich,C20,2023-12-05,0,Left censored,1e-06,2,Detected
 Pesticide,Hainich,C21,2023-12-12,0,Non-detect,1e-06,9,Not detected
@@ -732,7 +732,7 @@ Pesticide,Jasmund,G03,2023-11-14,0,Non-detect,1e-06,9,Not detected
 Pesticide,Jasmund,G04,2023-11-18,0,Non-detect,1e-06,9,Not detected
 Pesticide,Jasmund,G05,2023-11-18,0,Left censored,1e-06,2,Detected
 Pesticide,Jasmund,G06,2023-12-05,0,Left censored,1e-06,1,Detected
-Pesticide,Jasmund,G07,2024-01-08,14.8162,Fully quantified,14.8162,14.8162,Quantified
+Pesticide,Jasmund,G07,2024-01-08,14.8162,Fully quantified,14.8162,21.8162,Quantified
 Pesticide,Jasmund,G08,2023-11-18,0,Left censored,1e-06,2,Detected
 Pesticide,Jasmund,G09,2023-11-25,0,Left censored,1e-06,1,Detected
 Pesticide,Jasmund,G10,2023-12-19,0,Non-detect,1e-06,9,Not detected
@@ -757,7 +757,7 @@ Pesticide,Jasmund,G29,2023-11-17,0,Left censored,1e-06,2,Detected
 Pesticide,Jasmund,G30,2023-11-17,0,Non-detect,1e-06,9,Not detected
 Pesticide,Jasmund,G31,2023-11-18,0,Left censored,1e-06,1,Detected
 Pesticide,Jasmund,G32,2023-11-18,0,Non-detect,1e-06,9,Not detected
-Pesticide,Jasmund,G33,2024-01-28,5.644,Fully quantified,5.644,5.644,Quantified
+Pesticide,Jasmund,G33,2024-01-28,5.644,Fully quantified,5.644,12.644,Quantified
 Pesticide,Jasmund,G34,2023-11-17,0,Non-detect,1e-06,9,Not detected
 Pesticide,Jasmund,G35,2023-11-18,0,Non-detect,1e-06,9,Not detected
 Pesticide,Jasmund,G36,2023-11-22,0,Non-detect,1e-06,9,Not detected
@@ -837,8 +837,8 @@ Pesticide,Non-Park,CC17,2021-04-24,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC18,2021-04-23,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC19,2021-04-23,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC2,2021-05-27,0,Non-detect,1e-06,9,Not detected
-Pesticide,Non-Park,CC20,2021-04-21,3,Fully quantified,3,3,Quantified
-Pesticide,Non-Park,CC21,2021-04-19,4,Fully quantified,4,4,Quantified
+Pesticide,Non-Park,CC20,2021-04-21,3,Fully quantified,3,10,Quantified
+Pesticide,Non-Park,CC21,2021-04-19,4,Fully quantified,4,9,Quantified
 Pesticide,Non-Park,CC22,2021-04-17,0,Left censored,1e-06,4,Detected
 Pesticide,Non-Park,CC23,2021-04-25,0,Left censored,1e-06,4,Detected
 Pesticide,Non-Park,CC24,2021-04-18,0,Non-detect,1e-06,9,Not detected
@@ -882,7 +882,7 @@ Pesticide,Non-Park,CC58,2021-05-07,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC6,2021-05-14,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC7,2021-05-15,0,Non-detect,1e-06,9,Not detected
 Pesticide,Non-Park,CC8,2021-05-14,0,Left censored,1e-06,4,Detected
-Pesticide,Non-Park,CC9,2021-04-16,8,Fully quantified,8,8,Quantified
+Pesticide,Non-Park,CC9,2021-04-16,8,Fully quantified,8,13,Quantified
 Pesticide,Saechs_Schw,E 11,2024-08-02,0,Non-detect,1e-06,9,Not detected
 Pesticide,Saechs_Schw,E 12,2024-12-17,0,Non-detect,1e-06,9,Not detected
 Pesticide,Saechs_Schw,E 13,2024-09-05,0,Non-detect,1e-06,9,Not detected
