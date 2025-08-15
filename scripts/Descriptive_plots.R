@@ -149,7 +149,12 @@ for (covariate in names(barplots_covariates)) {
     dat,
     aes(x = Park, fill = .data[[covariate]])
   ) +
-    geom_bar(position = "fill", width = 0.90) +
+    geom_bar(
+      position = "fill",
+      width = 0.90,
+      linewidth = 0.2,
+      color = "gray10"
+    ) +
     scale_fill_manual(values = barplot_colors[[covariate]]) +
     scale_y_continuous(
       breaks = seq(0, 1, by = 0.2),
@@ -162,7 +167,7 @@ for (covariate in names(barplots_covariates)) {
 barplot_month <- dat |>
   filter(Sample_number != "A60") |>
   ggplot(aes(x = Month, fill = Park)) +
-  geom_bar(position = position_stack()) +
+  geom_bar(position = position_stack(), linewidth = 0.2, color = "gray10") +
   scale_fill_manual(values = get_park_colors()) +
   scale_x_date(date_breaks = "2 months", date_labels = "%b %Y") +
   labs(title = "Month of sample collection") +
