@@ -132,7 +132,7 @@ summarise_detection <- function(x) {
 # log-normal to be fitted, we set the lower bound to be a small value close to
 # 0, e.g. 1e-6.
 summarise_censoring <- function(detected, value, threshold) {
-  vals_sum <- sum(value, na.rm = TRUE)
+  vals_sum <- sum(value[detected == "Quantified"], na.rm = TRUE)
   ret <- c(
     Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
     Value_max = vals_sum + sum(threshold[detected != "Quantified"])
