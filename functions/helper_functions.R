@@ -126,12 +126,11 @@ summarise_detection <- function(x) {
 
 # This function creates a range per a chemical category, where the sum of all
 # observed values lie. This accounts for the censoring when a chemical is
-# detected only qualitatively.
-# IMPORTANT: When a chemical was not detected, we consider these observations as
-# zeros, but set them to a small value close to zero, e.g. 1e-4 in order to be
-# able to fit a lognormal model. When a chemical was detected only
-# qualitatively, we assume these to lie anywhere between 0 and their detection
-# threshold.
+# detected only qualitatively, or not detected at all.
+# IMPORTANT: When a chemical was not detected, or not quantified, we assume
+# these to lie anywhere between 0 and their detection threshold. For a
+# log-normal to be fitted, we set the lower bound to be a small value close to
+# 0, e.g. 1e-6.
 summarise_censoring <- function(detected, value, threshold) {
   vals_sum <- sum(value, na.rm = TRUE)
   ret <- c(
