@@ -27,7 +27,7 @@ species_mosaic_colors <- get_species_mosaic_colors()
 
 # Read the cleaned data and convert categories to factors ======================
 
-df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
+df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
   mutate(
     # It will be ordered as Quantified < Detected < Not detected, to display
     # correctly in the mosaic plot
@@ -50,7 +50,7 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
       levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
     )
   )
-dat <- read_csv("data/clean_data.csv") %>%
+dat <- read_csv("data/clean_data.csv") |>
   mutate(
     Park = factor(
       Park,
@@ -82,7 +82,7 @@ dat <- read_csv("data/clean_data.csv") %>%
         sep = "-"
       )
     )
-  ) %>%
+  ) |>
   # Convert the measurements to character to avoid problems when pivoting
   mutate_at(vars(-Age, -Species, -Sex, -Season, -Park, -Month), as.character)
 
@@ -92,10 +92,10 @@ dat <- read_csv("data/clean_data.csv") %>%
 df_quantified_by_category <- filter(
   df_detected_by_category,
   Detected_by_category == "Quantified"
-) %>%
-  group_by(Park, primary_category) %>%
-  mutate(n_quantified = n()) %>%
-  ungroup() %>%
+) |>
+  group_by(Park, primary_category) |>
+  mutate(n_quantified = n()) |>
+  ungroup() |>
   mutate(Boxplot = n_quantified >= 5)
 
 # Create the data frames for the mosaic plots ==================================
@@ -109,7 +109,7 @@ df_mosaic <- vector(mode = "list", 3)
 names(df_rectangles) <- names(df_mosaic) <- c("Sex", "Age", "Species")
 
 for (k in seq_along(primary_category_labels)) {
-  temp_filtered <- df_detected_by_category %>%
+  temp_filtered <- df_detected_by_category |>
     filter(primary_category == names(primary_category_labels)[k])
   for (covariate in names(df_rectangles)) {
     df_rectangles[[covariate]][[k]] <- rectangles_for_mosaic_plots(
@@ -125,7 +125,7 @@ for (covariate in names(df_rectangles)) {
   df_mosaic[[covariate]] <- bind_rows(
     df_rectangles[[covariate]],
     .id = "primary_category"
-  ) %>%
+  ) |>
     mutate(
       bar = factor(bar, levels = levels(dat$Park)),
       primary_category = factor(
@@ -159,7 +159,8 @@ for (covariate in names(barplots_covariates)) {
     labs(y = "", title = covariate) +
     get_barplot_descriptive_theme()
 }
-barplot_month <- dat |> filter(Sample_number != "A60") |>
+barplot_month <- dat |>
+  filter(Sample_number != "A60") |>
   ggplot(aes(x = Month, fill = Park)) +
   geom_bar(position = position_stack()) +
   scale_fill_manual(values = get_park_colors()) +
