@@ -49,7 +49,9 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
       Season,
       levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
     )
-  )
+  ) |>
+  # Filter out the A60 observation, which is excluded also during the analysis
+  filter(Sample_number != "A60")
 dat <- read_csv("data/clean_data.csv") |>
   mutate(
     Park = factor(
@@ -83,8 +85,10 @@ dat <- read_csv("data/clean_data.csv") |>
       )
     )
   ) |>
+  # Filter out the A60 observation, which is excluded also during the analysis
+  filter(Sample_number != "A60") |> 
   # Convert the measurements to character to avoid problems when pivoting
-  mutate_at(vars(-Age, -Species, -Sex, -Season, -Park, -Month), as.character)
+  mutate(across(-c(Age, Species, Sex, Season, Park, Month), as.character))
 
 # Prepare the data frame for the boxplots ======================================
 
@@ -93,9 +97,7 @@ df_quantified_by_category <- filter(
   df_detected_by_category,
   Detected_by_category == "Quantified"
 ) |>
-  group_by(Park, primary_category) |>
-  mutate(n_quantified = n()) |>
-  ungroup() |>
+  add_count(Park, primary_category, name = "n_quantified") |>
   mutate(Boxplot = n_quantified >= 5)
 
 # Create the data frames for the mosaic plots ==================================
@@ -164,11 +166,9 @@ for (covariate in names(barplots_covariates)) {
     labs(y = "", title = covariate) +
     get_barplot_descriptive_theme()
 }
-barplot_month <- dat |>
-  filter(Sample_number != "A60") |>
-  ggplot(aes(x = Month, fill = Park)) +
+barplot_month <- ggplot(dat, aes(x = Month, fill = Park)) +
   geom_bar(position = position_stack(), linewidth = 0.2, color = "gray10") +
-  scale_fill_manual(values = get_park_colors()) +
+  scale_fill_manual(values = park_colors) +
   scale_x_date(date_breaks = "2 months", date_labels = "%b %Y") +
   labs(title = "Month of sample collection") +
   get_barplot_descriptive_theme()
