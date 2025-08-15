@@ -71,19 +71,7 @@ dat <- read_csv("data/clean_data.csv") |>
       levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
     ),
     # First day of the month to plot the number of samples in time
-    Month = as.Date(
-      paste(
-        year(Date_of_sample_collection),
-        stringr::str_pad(
-          month(Date_of_sample_collection),
-          pad = "0",
-          side = "left",
-          width = 2
-        ),
-        "01",
-        sep = "-"
-      )
-    )
+    Month = floor_date(as.Date(Date_of_sample_collection), "month")
   ) |>
   # Filter out the A60 observation, which is excluded also during the analysis
   filter(Sample_number != "A60") |> 
@@ -314,7 +302,7 @@ barplot_quantified <- ggplot(
   aes(
     y = Park,
     fill = Park,
-    alpha = fct_relevel(Detected_by_category, rev),
+    alpha = fct_rev(Detected_by_category),
     color = Detected_by_category
   )
 ) +
