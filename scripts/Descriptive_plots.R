@@ -67,10 +67,24 @@ dat <- read_csv("data/clean_data.csv") %>%
     Season = factor(
       Season,
       levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
+    ),
+    # First day of the month to plot the number of samples in time
+    Month = as.Date(
+      paste(
+        year(Date_of_sample_collection),
+        stringr::str_pad(
+          month(Date_of_sample_collection),
+          pad = "0",
+          side = "left",
+          width = 2
+        ),
+        "01",
+        sep = "-"
+      )
     )
   ) %>%
   # Convert the measurements to character to avoid problems when pivoting
-  mutate_at(vars(-Age, -Species, -Sex, -Season, -Park), as.character)
+  mutate_at(vars(-Age, -Species, -Sex, -Season, -Park, -Month), as.character)
 
 # Prepare the data frame for the boxplots ======================================
 
@@ -145,14 +159,15 @@ for (covariate in names(barplots_covariates)) {
     labs(y = "", title = covariate) +
     get_barplot_descriptive_theme()
 }
-barplot_season <- ggplot(dat, aes(x = Park, fill = Season)) +
-  geom_bar(position = position_stack(), width = 0.90) +
-  scale_fill_manual(values = barplot_colors$Season) +
-  scale_x_discrete(labels = park_labels) +
-  labs(y = "", title = "Season of sample collection") +
+barplot_month <- dat |> filter(Sample_number != "A60") |>
+  ggplot(aes(x = Month, fill = Park)) +
+  geom_bar(position = position_stack()) +
+  scale_fill_manual(values = get_park_colors()) +
+  scale_x_date(date_breaks = "2 months", date_labels = "%b %Y") +
+  labs(title = "Month of sample collection") +
   get_barplot_descriptive_theme()
 
-barplots <- barplot_season +
+barplots <- barplot_month +
   barplots_covariates$Sex +
   barplots_covariates$Age +
   barplots_covariates$Species +
