@@ -87,14 +87,14 @@ process_data <- function(dat, chem_categories) {
     ))
   }
 
-  # Remove chemicals, where we too little information. This means dropping all
-  # chemicals, where we have no quantified values and the proportion of detected
-  # values is less than 5 %.
+  # Remove chemicals, where we have too little information. This means dropping
+  # all chemicals, where we have no quantified values and the proportion of
+  # detected values is less than 5 %.
+  threshold_to_keep <- 0.05
   informative_chemicals <- dat_long |>
-    group_by(Chemical) |>
-    summarise(Detection_table = list(table(factor(Detected)))) |>
-    unnest_wider(Detection_table) |>
-    filter(!is.na(Quantified) | Detected > nrow(dat) / 20) |>
+    count(Chemical, Detected, name = "n") |>
+    pivot_wider(names_from = Detected, values_from = n, values_fill = 0) |>
+    filter(Quantified > 0 | Detected >= nrow(dat) * threshold_to_keep) |>
     pull(Chemical)
   dat_long <- dat_long |> filter(Chemical %in% informative_chemicals)
 
