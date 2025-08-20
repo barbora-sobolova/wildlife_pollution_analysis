@@ -160,7 +160,7 @@ summarise_detection <- function(x) {
 #'    \begin{itemize}
 #'      \item For all samples containing only non-detects or non-quantifiable
 #'      values, the best case is a (near) 0 value and the worst case is the sum
-#'      of the quantification thresholds.
+#'      of the quantification thresholds (LOQ).
 #'      \item When at least one value is quantified, the best value is the sum
 #'      of all quantified values and than the sum of the quantification
 #'      thresholds is added to account for non-detects and non-quantifiable
