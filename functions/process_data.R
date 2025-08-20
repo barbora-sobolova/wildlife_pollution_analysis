@@ -4,7 +4,7 @@
 #'   columns `Park`, `Sample_number`, `Species`, `Sex`, `Age`,
 #'   `Date_of_sample_collection` and `Season`
 #' @param chem_categories A data frame with columns `Chemical`,
-#'   `primary_category`, and `Detection_threshold`
+#'   `primary_category`, and `Quantification_threshold`
 #' @return A data frame with aggregated measurements by category including
 #'    detection status and interval bounds for best/worst-case
 #'    scenarios
@@ -99,7 +99,7 @@ process_data <- function(dat, chem_categories) {
       Value_sum_quantified_by_category = sum(Value, na.rm = TRUE),
       # For the regression model fitting
       Value_sum_by_category_left_censored = list(
-        summarise_censoring(Detected, Value, Detection_threshold)
+        summarise_censoring(Detected, Value, Quantification_threshold)
       ),
       Detected_by_category = summarise_detection(Detected)
     ) |>
