@@ -139,7 +139,7 @@ summarise_detection <- function(x) {
 #' Function creating a range for the aggregate concentration value per chemical
 #' category
 #'
-#' @description This function creates a range per a chemical category, where the
+#' @description This function creates a range per chemical category, where the
 #'    sum of all observed values lie. This accounts for the censoring when a
 #'    chemical is detected only qualitatively, or not detected at all.
 #' @param detected A character vector indicating detection with possible values
@@ -177,10 +177,10 @@ summarise_censoring <- function(detected, value, threshold) {
 
 #' Function for removing information on year
 #'
-#' @description This function sets a year of a date to an (almost) arbitrary
-#' year 2022/2023 (2023 for January and February, 2022 for the rest). The only
-#' non-arbitrary thing is that 2023 was not a leap year. This is not a concern,
-#' since we never get observations from 29. February.
+#' @description This function sets the year component of a date to an (almost)
+#'    arbitrary year 2022/2023 (2023 for January and February, 2022 for the
+#'    rest). The only non-arbitrary aspect is that 2023 was not a leap year.
+#'    This is not a concern, since we never get observations from 29 February.
 #' @param date_vec A vector of values in a date format
 #' @return A vector of values in a date format with the year set to 2022, or
 #'    2023
