@@ -148,8 +148,10 @@ summarise_detection <- function(x) {
 #'    quantified measurements and NA for the rest
 #' @param threshold A numeric vector containing the quantification thresholds of
 #'    individual chemicals
-#' @return A string indicating the aggregated status of "Not detected",
-#'    "Detected" and "Quantified" for the whole category of chemical substances
+#' @return A named numeric vector of length 2 with elements:
+#'    \code{Value_min} and \code{Value_max} defining the lower and upper bounds
+#'    (best and worst case values) for the aggregated concentration in the
+#'    category
 #' @details When a chemical was not detected, or not quantified we consider
 #'    these observations to be anywhere between zero and the quantification
 #'    threshold, but set the lower bound to a small value close to zero, e.g.
