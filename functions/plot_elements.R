@@ -54,7 +54,7 @@ get_park_colors <- function(non_park_comparison = FALSE) {
   cols
 }
 
-# Color coding of the covariate categories in desriptive barplots
+# Color coding of the covariate categories in descriptive barplots
 get_barplot_colors <- function() {
   list(
     Sex = c("Male" = "royalblue2", "Female" = "firebrick3"),

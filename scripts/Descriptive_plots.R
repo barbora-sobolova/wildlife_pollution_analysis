@@ -6,7 +6,10 @@ source("functions/ggplot_box_legend.R")
 source("functions/plot_elements.R")
 
 # Set locale to English for displaying the month names correctly
-Sys.setlocale("LC_TIME", "English")
+# (with fallbacks recommended by the CodeRabbit)
+loc <- Sys.setlocale("LC_TIME", "English")
+if (is.na(loc)) loc <- Sys.setlocale("LC_TIME", "en_US.UTF-8")
+if (is.na(loc)) loc <- Sys.setlocale("LC_TIME", "English_United States.1252")
 
 # Function converting the rgb color codes to hex for the color choice
 # Can be deleted as soon as all colors are determined
