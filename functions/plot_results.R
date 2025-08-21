@@ -108,7 +108,8 @@ plot_results <- function(
       x = "Date",
       title = "Penalized spline for the date variable (intercept included)",
       y = bquote("Concentration in" ~ mu * "g" ~ kg^-1)
-    )
+    ) +
+    coord_cartesian(ylim = c(0, NA))
 
   # Breaks of the color gradient for the categorical coefficients. Needs to be
   # determined manually.
