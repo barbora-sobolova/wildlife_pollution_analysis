@@ -40,16 +40,16 @@ get_park_labels <- function(non_park_comparison = FALSE) {
 get_park_colors <- function(non_park_comparison = FALSE) {
   cols <- c(
     "Bay_Wald" = "deepskyblue4",
-    "Eifel" = "goldenrod1",
+    "Eifel" = "#AD7B00",
     "Hainich" = "firebrick3",
-    "Hunsrueck" = "purple3",
-    "Jasmund" = "lightblue3",
-    "Kellerwald" = "palegreen",
-    "Saechs_Schw" = "darkgreen",
+    "Hunsrueck" = "purple4",
+    "Jasmund" =  "#5E6B7B",
+    "Kellerwald" = "salmon4",
+    "Saechs_Schw" = "#004000",
     "Vorpomm" = "magenta3"
   )
   if (non_park_comparison) {
-    cols <- c(cols, "Non-Park" = "salmon3")
+    cols <- c(cols, "Non-Park" = "seagreen4")
   }
   cols
 }
