@@ -25,7 +25,7 @@ get_park_labels <- function(non_park_comparison = FALSE) {
     "Saechs_Schw" = "Sächsische \nSchweiz",
     "Jasmund" = "Jasmund",
     "Kellerwald" = "Kellerwald\nEdersee",
-    "Eiffel" = "Eiffel",
+    "Eifel" = "Eifel",
     "Vorpomm" = "Vorpomm. \nBoddenlandschaft"
   )
   if (non_park_comparison) {
@@ -45,7 +45,7 @@ get_park_colors <- function(non_park_comparison = FALSE) {
     "Saechs_Schw" = "darkgreen",
     "Jasmund" = "lightblue3",
     "Kellerwald" = "palegreen",
-    "Eiffel" = "goldenrod1",
+    "Eifel" = "goldenrod1",
     "Vorpomm" = "magenta3"
   )
   if (non_park_comparison) {
