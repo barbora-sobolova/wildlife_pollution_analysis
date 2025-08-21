@@ -20,12 +20,12 @@ get_primary_category_labels <- function() {
 get_park_labels <- function(non_park_comparison = FALSE) {
   labs <- c(
     "Bay_Wald" = "Bayerischer \nWald",
+    "Eifel" = "Eifel",
     "Hainich" = "Hainich",
     "Hunsrueck" = "Hunsrück\nHochwald",
-    "Saechs_Schw" = "Sächsische \nSchweiz",
     "Jasmund" = "Jasmund",
     "Kellerwald" = "Kellerwald\nEdersee",
-    "Eifel" = "Eifel",
+    "Saechs_Schw" = "Sächsische \nSchweiz",
     "Vorpomm" = "Vorpomm. \nBoddenlandschaft"
   )
   if (non_park_comparison) {
@@ -40,12 +40,12 @@ get_park_labels <- function(non_park_comparison = FALSE) {
 get_park_colors <- function(non_park_comparison = FALSE) {
   cols <- c(
     "Bay_Wald" = "deepskyblue4",
+    "Eifel" = "goldenrod1",
     "Hainich" = "firebrick3",
     "Hunsrueck" = "purple3",
-    "Saechs_Schw" = "darkgreen",
     "Jasmund" = "lightblue3",
     "Kellerwald" = "palegreen",
-    "Eifel" = "goldenrod1",
+    "Saechs_Schw" = "darkgreen",
     "Vorpomm" = "magenta3"
   )
   if (non_park_comparison) {
