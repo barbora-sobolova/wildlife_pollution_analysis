@@ -7,6 +7,9 @@ source("functions/helper_functions.R")
 source("functions/plot_results.R")
 theme_set(theme_bw())
 
+# Set locale to English for displaying the month names correctly
+Sys.setlocale("LC_TIME", "English")
+
 # Model the main deer data =====================================================
 
 # Load and filter the data. We remove observation Z91 that was collected on

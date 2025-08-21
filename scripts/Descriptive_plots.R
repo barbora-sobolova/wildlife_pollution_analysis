@@ -5,6 +5,9 @@ source("functions/custom_mosaic_plot_function.R")
 source("functions/ggplot_box_legend.R")
 source("functions/plot_elements.R")
 
+# Set locale to English for displaying the month names correctly
+Sys.setlocale("LC_TIME", "English")
+
 # Function converting the rgb color codes to hex for the color choice
 # Can be deleted as soon as all colors are determined
 rgb2hex <- function(rgbmat) {
