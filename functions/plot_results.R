@@ -41,7 +41,7 @@ plot_results <- function(
       by = 1
     ),
     Park = "Bay_Wald",  # Reference category
-    Age = "Calf"  # Reference category
+    Age = "Fawn"  # Reference category
   )
   spline_curve <- as.data.frame(
     predict(fitted_survreg_model, newdata = newdata, se = TRUE)

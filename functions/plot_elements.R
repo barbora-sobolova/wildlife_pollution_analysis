@@ -59,7 +59,7 @@ get_barplot_colors <- function() {
   list(
     Sex = c("Male" = "royalblue2", "Female" = "firebrick3"),
     Age = c(
-      "Calf" = "palevioletred2",
+      "Fawn" = "palevioletred2",
       "Subadult" = "#46CD8A",
       "Adult" = "darkorange3"
     ),
@@ -107,7 +107,7 @@ get_species_mosaic_colors <- function() {
 # Color coding for the mosaic plot by age
 get_age_mosaic_colors <- function() {
   list(
-    Calf = c(
+    Fawn = c(
       "Not detected" = "pink",
       "Detected" = "palevioletred2",
       "Quantified" = "hotpink4"

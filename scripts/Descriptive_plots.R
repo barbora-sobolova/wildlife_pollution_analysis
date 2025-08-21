@@ -43,7 +43,7 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") %>%
       ordered = TRUE
     ),
     Sex = factor(Sex, levels = c("Male", "Female")),
-    Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
+    Age = factor(Age, levels = c("Adult", "Subadult", "Fawn"), ordered = TRUE),
     Species = factor(Species, levels = c("D. dama", "C. elaphus")),
     Season = factor(
       Season,
@@ -59,7 +59,7 @@ dat <- read_csv("data/clean_data.csv") %>%
       ordered = TRUE
     ),
     Sex = factor(Sex, levels = c("Male", "Female")),
-    Age = factor(Age, levels = c("Adult", "Subadult", "Calf"), ordered = TRUE),
+    Age = factor(Age, levels = c("Adult", "Subadult", "Fawn"), ordered = TRUE),
     Species = factor(
       Species,
       levels = c("D. dama", "C. elaphus")
@@ -263,10 +263,10 @@ mosaic_age <- ggplot(
   scale_alpha_manual(values = c(1, 1, 1)) +
   scale_linetype_manual(values = c(1, 1, 1)) +
   scale_fill_manual(
-    name = "Calf",
+    name = "Fawn",
     values = unlist(age_mosaic_colors),
-    breaks = names(unlist(age_mosaic_colors["Calf"])),
-    labels = names(age_mosaic_colors$Calf)
+    breaks = names(unlist(age_mosaic_colors["Fawn"])),
+    labels = names(age_mosaic_colors$Fawn)
   ) +
   facet_wrap(~primary_category, nrow = 4, ncol = 2) +
   labs(x = "Park", title = "Pollutant detection by age") +
