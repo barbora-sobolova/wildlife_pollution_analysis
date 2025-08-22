@@ -120,7 +120,7 @@ clean_data <- raw_data |>
         ifelse(x == 0, NA, x)
       }
     )
-  ) |> 
+  ) |>
   mutate(Park = "Non-Park")
 
 # Save the cleaned data as .csv

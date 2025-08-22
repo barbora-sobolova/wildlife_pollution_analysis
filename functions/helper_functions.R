@@ -242,10 +242,10 @@ extract_reg_coeffs <- function(
 save_data_as_xls <- function(dat) {
   # Create a new workbook
   wb <- openxlsx::createWorkbook()
-  
+
   # Extract parks
   park <- unique(dat$Park)
-  
+
   # Loop through parks and add each summary to a sheet
   for (k in seq_along(park)) {
     data_chunk <- dat |> filter(Park == park[k]) |> select(-Park)
