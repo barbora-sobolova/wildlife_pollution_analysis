@@ -82,6 +82,8 @@ clean_data <- raw_data |>
   filter(!(Sample_number %in% c("F19b", "F20b"))) |>
   # Drop the only C. capreolus
   filter(Sample_number != "G21") |>
+  # Filter out observations, where we have no date. This should be only A60.
+  filter(Sample_number != "A60") |>
   dplyr::select(
     # Filter out  unnecessary information
     -c(
@@ -182,5 +184,14 @@ check_measured_vs_overview(
 )
 
 # Save the cleaned data and classification of the chemicals ====================
+# Save as .csv
 write_csv(clean_data, file = "data/clean_data.csv")
 write_csv(chem_categories, file = "data/chemical_categories.csv")
+
+# Save as Excel
+wb <- save_data_as_xls(clean_data)
+openxlsx::saveWorkbook(
+  wb,
+  "data/clean_data.xlsx",
+  overwrite = TRUE
+)
