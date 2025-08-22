@@ -114,10 +114,6 @@ clean_data[clean_data$Sample_number == "Z73", "Season"] <- "Summer 2024"
 # in 2024/25, which got classified as from the summer.
 clean_data[clean_data$Sample_number == "A91", "Season"] <- "Winter 2024/25"
 
-# Impute the season from Bay. Wald. This is Winter 2024/25, as this data
-# is in the second data batch.
-clean_data[clean_data$Sample_number == "A60", "Season"] <- "Winter 2024/25"
-
 # Fix the incorrect age category
 clean_data[clean_data$Sample_number == "F35", "Age"] <- "Adult"
 
