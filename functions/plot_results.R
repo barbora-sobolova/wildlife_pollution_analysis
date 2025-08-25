@@ -149,13 +149,13 @@ plot_results <- function(
     ) +
     coord_cartesian(
       ylim = c(
-        0, 
+        0,
         max(
           quantile(df_filtered$Value_sum_quantified_by_category, 0.95),
           spline_curve$upper + 1
-            )
         )
       )
+    )
 
   # Breaks of the color gradient for the categorical coefficients. Needs to be
   # determined manually.
