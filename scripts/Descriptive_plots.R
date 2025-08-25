@@ -80,7 +80,7 @@ dat <- read_csv("data/clean_data.csv") |>
     Month = floor_date(as.Date(Date_of_sample_collection), "month")
   ) |>
   # Filter out the A60 observation, which is excluded also during the analysis
-  filter(Sample_number != "A60") |> 
+  filter(Sample_number != "A60") |>
   # Convert the measurements to character to avoid problems when pivoting
   mutate(across(-c(Age, Species, Sex, Season, Park, Month), as.character))
 
