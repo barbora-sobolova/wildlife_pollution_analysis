@@ -242,7 +242,7 @@ plot_results <- function(
     aes(
       x = Covariate_category,
       fill = Covariate_category,
-      alpha = fct_relevel(Detected_by_category, rev),
+      alpha = fct_rev(Detected_by_category),
       color = Detected_by_category
     )
   ) +
