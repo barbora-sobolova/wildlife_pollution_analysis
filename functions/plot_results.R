@@ -232,7 +232,8 @@ plot_results <- function(
       y = bquote("Concentration in" ~ mu * "g" ~ kg^-1),
       title = "Quantified concentrations"
     ) +
-    coord_cartesian(ylim = c(1, 1000))
+    coord_cartesian(ylim = c(1, 1000)) +
+    theme(axis.text.x = element_text(size = 8))
 
   plt$barplot <- ggplot(
     df_boxbar,
@@ -267,7 +268,16 @@ plot_results <- function(
       values = c("Quantified" = 1, "Detected" = 0.5, "Not detected" = 0),
       name = "Occurrence\nof pollutants"
     ) +
-    labs(title = "Proportion quantified or qualitatively detected", y = NULL)
+    labs(
+      title = "Proportion quantified or qualitatively detected",
+      y = NULL,
+      x = NULL
+    ) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text.x = element_text(size = 8)
+    )
 
   # Compose the figures using patchwork
   plt$composite <-
