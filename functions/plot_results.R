@@ -147,7 +147,10 @@ plot_results <- function(
       alpha = 0.75
     ) +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
-    scale_color_manual(values = get_park_colors(), guide = "none") +
+    scale_color_manual(
+      values = get_park_colors(non_park_comparison),
+      guide = "none"
+    ) +
     labs(
       x = "Date",
       title = "Penalized spline for the date variable (intercept included)",
