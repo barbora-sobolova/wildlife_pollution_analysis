@@ -265,7 +265,7 @@ plot_results <- function(
     scale_alpha_manual(
       breaks = c("Quantified", "Detected"),
       values = c("Quantified" = 1, "Detected" = 0.5, "Not detected" = 0),
-      name = "Occurence\nof pollutants"
+      name = "Occurrence\nof pollutants"
     ) +
     labs(title = "Proportion quantified or qualitatively detected", y = NULL)
 

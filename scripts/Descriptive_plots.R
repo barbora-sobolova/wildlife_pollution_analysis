@@ -324,7 +324,7 @@ barplot_quantified <- ggplot(
   ) +
   labs(
     y = "",
-    title = "Occurence",
+    title = "Occurrence",
     x = "\nProportion exactly quantified\nor qualitatively detected"
   ) +
   get_barplot_detect_theme()
