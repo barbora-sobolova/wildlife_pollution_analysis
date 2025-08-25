@@ -212,10 +212,18 @@ extract_reg_coeffs <- function(
     # Transform the coefficients to the response scale
     Vals = exp(c(0, coeffs[where_coeffs])),
     lower = exp(
-      c(NA, coeffs[where_coeffs] - summ$table[where_coeffs, "Std. Error"])
+      c(
+        NA,
+        coeffs[where_coeffs] -
+          qnorm(0.975) * summ$table[where_coeffs, "Std. Error"]
+      )
     ),
     upper = exp(
-      c(NA, coeffs[where_coeffs] + summ$table[where_coeffs, "Std. Error"])
+      c(
+        NA,
+        coeffs[where_coeffs] +
+          qnorm(0.975) * summ$table[where_coeffs, "Std. Error"]
+      )
     ),
     p_val = c(NA, summ$table[where_coeffs, "p"]),
     coeff = factor(covariate_levels, levels = covariate_levels),
