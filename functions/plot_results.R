@@ -60,10 +60,8 @@ plot_results <- function(
   # drop the age covariate from all plots
   if (non_park_comparison) {
     df_coeffs <- df_park
-    df_boxbar <- df_filtered
     covcat_colors <- park_colors
-    # Add 2 columns, that are more complicated if we display also the age
-    # coefficients, but are mere placeholders here.
+    # Add the two placeholder columns for consistency with the age+park path.
     df_boxbar <- df_filtered |>
       mutate(Covariate = "Park", Covariate_category = Park)
   } else {
@@ -262,7 +260,6 @@ plot_results <- function(
     ) +
     scale_fill_manual(
       values = covcat_colors,
-      labels = x_labels_coeffs,
       guide = "none"
     ) +
     scale_alpha_manual(
