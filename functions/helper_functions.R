@@ -233,7 +233,12 @@ extract_reg_coeffs <- function(
     empty = "non-empty"
   ) |>
     mutate(
-      p_val_label = paste0("p = ", format(round(p_val, 2), nsmall = 2)),
+      p_val_label = ifelse(
+        p_val < 0.01,
+        "p < 0.01",
+        paste0("p = ", format(round(p_val, 2), nsmall = 2)
+        )
+      ),
       # Format the label, which will have 2 lines - the coefficient and the
       # confidence interval
       formatted_coeff_label = paste0(
