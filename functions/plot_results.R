@@ -13,7 +13,7 @@ plot_results <- function(
   # Get the plot elements
   park_labels <- get_park_labels(non_park_comparison)
   park_colors <- get_park_colors(non_park_comparison)
-  
+
   # Extract the coefficients and standard errors
   coeffs <- coefficients(fitted_survreg_model)
   summ <- summary(fitted_survreg_model)
@@ -91,13 +91,13 @@ plot_results <- function(
       park_colors,
       rep(NA, empty_tiles),
       get_age_mosaic_colors() |>
-        lapply(function (x) {unname(x["Quantified"])}) |>
+        lapply(function(x) unname(x["Quantified"])) |>
         unlist()
-      )
+    )
     names(covcat_colors) <- df_coeffs$coeff
     x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
-    
+
     # For the descriptive box- and barplot, concatenate the Park and Age
     # covariates
     df_boxbar <- df_filtered |>
@@ -107,15 +107,15 @@ plot_results <- function(
         values_to = "Covariate_category"
       )
   }
-  
+
   df_boxbar <- df_boxbar |>
     # Set factor levels for the correct ordering of bars
     mutate(
       Covariate_category = factor(
-        Covariate_category, 
+        Covariate_category,
         levels = names(covcat_colors)
       )
-    ) |> 
+    ) |>
     # Indicate, whether we have enough observations to draw a boxplot
     group_by(Covariate_category) |>
     mutate(n_quantified = sum(Detected_by_category == "Quantified")) |>
@@ -235,7 +235,7 @@ plot_results <- function(
       title = "Quantified concentrations"
     ) +
     coord_cartesian(ylim = c(1, 1000))
-  
+
   plt$barplot <- ggplot(
     df_boxbar,
     aes(
@@ -249,7 +249,7 @@ plot_results <- function(
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
     scale_x_discrete(
       breaks = names(x_labels_coeffs),
-      labels = x_labels_coeffs, 
+      labels = x_labels_coeffs,
       drop = FALSE
     ) +
     scale_color_manual(
