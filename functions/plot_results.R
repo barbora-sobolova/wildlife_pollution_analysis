@@ -10,21 +10,13 @@ plot_results <- function(
   plt <- vector("list", 6)
   names(plt) <- c("spline", "reg_coeffs", "boxplot", "barplot", "composite")
 
+  # Get the plot elements
+  park_labels <- get_park_labels(non_park_comparison)
+  park_colors <- get_park_colors(non_park_comparison)
+  
   # Extract the coefficients and standard errors
   coeffs <- coefficients(fitted_survreg_model)
   summ <- summary(fitted_survreg_model)
-
-  # For the descriptive boxplot, indicate, whether to draw individual
-  # observations
-  df_filtered <- df_filtered |>
-    group_by(Park) |>
-    mutate(n_quantified = sum(Detected_by_category == "Quantified")) |>
-    ungroup() |>
-    mutate(Boxplot = n_quantified >= 5)
-
-  # Get the plot elements ======================================================
-  park_labels <- get_park_labels(non_park_comparison)
-  park_colors <- get_park_colors(non_park_comparison)
 
   # Display the spline =========================================================
 
@@ -52,7 +44,8 @@ plot_results <- function(
       upper = fit + se.fit
     )
 
-  # Elements of the plot of the categorical coefficients =======================
+  # Data frames for the rest of the plots (coefficient tiles, boxplots and
+  # barplots) ==================================================================
   x_labels_coeffs <- park_labels
   names(x_labels_coeffs) <- names(park_labels)
 
@@ -64,9 +57,15 @@ plot_results <- function(
   )
 
   # If we compare with the roe deer data from non-park localities, we have to
-  # drop the age covariate
+  # drop the age covariate from all plots
   if (non_park_comparison) {
     df_coeffs <- df_park
+    df_boxbar <- df_filtered
+    covcat_colors <- park_colors
+    # Add 2 columns, that are more complicated if we display also the age
+    # coefficients, but are mere placeholders here.
+    df_boxbar <- df_filtered |>
+      mutate(Covariate = "Park", Covariate_category = Park)
   } else {
     # Number of empty tiles between the times for parks and age categories
     empty_tiles <- 1
@@ -88,9 +87,40 @@ plot_results <- function(
     )
     df_coeffs <- rbind(df_park, df_empty, df_age)
 
+    covcat_colors <- c(
+      park_colors,
+      rep(NA, empty_tiles),
+      get_age_mosaic_colors() |>
+        lapply(function (x) {unname(x["Quantified"])}) |>
+        unlist()
+      )
+    names(covcat_colors) <- df_coeffs$coeff
     x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
+    
+    # For the descriptive box- and barplot, concatenate the Park and Age
+    # covariates
+    df_boxbar <- df_filtered |>
+      pivot_longer(
+        c(Park, Age),
+        names_to = "Covariate",
+        values_to = "Covariate_category"
+      )
   }
+  
+  df_boxbar <- df_boxbar |>
+    # Set factor levels for the correct ordering of bars
+    mutate(
+      Covariate_category = factor(
+        Covariate_category, 
+        levels = names(covcat_colors)
+      )
+    ) |> 
+    # Indicate, whether we have enough observations to draw a boxplot
+    group_by(Covariate_category) |>
+    mutate(n_quantified = sum(Detected_by_category == "Quantified")) |>
+    ungroup() |>
+    mutate(Boxplot = n_quantified >= 5)
 
   # Plot results ===============================================================
   plt$spline <- ggplot() +
@@ -162,16 +192,16 @@ plot_results <- function(
       axis.text.x = element_text(size = 8)
     )
 
-  plt$boxplot <- df_filtered |>
+  plt$boxplot <- df_boxbar |>
     filter(
       Detected_by_category == "Quantified"
     ) |>
     ggplot(
       aes(
         y = Value_sum_quantified_by_category,
-        x = Park,
-        fill = Park,
-        color = Park
+        x = Covariate_category,
+        fill = Covariate_category,
+        color = Covariate_category
       )
     ) +
     geom_point(
@@ -188,32 +218,40 @@ plot_results <- function(
       alpha = 0.5,
       outlier.shape = 2
     ) +
-    scale_color_manual(values = park_colors, guide = "none") +
-    scale_x_discrete(labels = park_labels, drop = FALSE) +
+    scale_color_manual(values = covcat_colors, guide = "none") +
+    scale_x_discrete(
+      breaks = names(x_labels_coeffs),
+      labels = x_labels_coeffs,
+      drop = FALSE
+    ) +
     scale_y_continuous(
       trans = "log10",
       breaks = c(1, 10, 100, 1000)
     ) +
-    scale_fill_manual(values = park_colors, guide = "none") +
+    scale_fill_manual(values = covcat_colors, guide = "none") +
     labs(
       x = NULL,
       y = bquote("Concentration in" ~ mu * "g" ~ kg^-1),
       title = "Quantified concentrations"
     ) +
     coord_cartesian(ylim = c(1, 1000))
-
+  
   plt$barplot <- ggplot(
-    df_filtered,
+    df_boxbar,
     aes(
-      x = Park,
-      fill = Park,
+      x = Covariate_category,
+      fill = Covariate_category,
       alpha = fct_relevel(Detected_by_category, rev),
       color = Detected_by_category
     )
   ) +
     geom_bar(position = "fill", width = 0.8, linewidth = 0.2) +
     scale_y_continuous(breaks = c(0, 0.5, 1)) +
-    scale_x_discrete(labels = park_labels, drop = FALSE) +
+    scale_x_discrete(
+      breaks = names(x_labels_coeffs),
+      labels = x_labels_coeffs, 
+      drop = FALSE
+    ) +
     scale_color_manual(
       values = c(
         "Quantified" = "gray10",
@@ -223,8 +261,8 @@ plot_results <- function(
       guide = "none"
     ) +
     scale_fill_manual(
-      values = park_colors,
-      labels = park_labels,
+      values = covcat_colors,
+      labels = x_labels_coeffs,
       guide = "none"
     ) +
     scale_alpha_manual(
