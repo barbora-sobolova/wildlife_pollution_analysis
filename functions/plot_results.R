@@ -131,17 +131,23 @@ plot_results <- function(
       data = spline_curve,
       aes(x = Date_of_sample_collection, y = fit)
     ) +
-    geom_point(
-      data = ~ subset(df_filtered, Detected_by_category == "Quantified"),
-      aes(x = Date_of_sample_collection, y = Value_sum_quantified_by_category),
-      shape = 1
-    ) +
     geom_ribbon(
       data = spline_curve,
       aes(x = Date_of_sample_collection, ymin = lower, ymax = upper),
       alpha = 0.5
     ) +
+    # Points for quantified observations
+    geom_point(
+      data = subset(df_filtered, Detected_by_category == "Quantified"),
+      aes(
+        x = Date_of_sample_collection,
+        y = Value_sum_quantified_by_category,
+        color = Park
+      ),
+      alpha = 0.75
+    ) +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
+    scale_color_manual(values = get_park_colors(), guide = "none") +
     labs(
       x = "Date",
       title = "Penalized spline for the date variable (intercept included)",
@@ -151,7 +157,11 @@ plot_results <- function(
       ylim = c(
         0,
         max(
-          quantile(df_filtered$Value_sum_quantified_by_category, 0.95),
+          quantile(
+            df_filtered$Value_sum_quantified_by_category,
+            0.95,
+            na.rm = TRUE
+          ),
           spline_curve$upper + 1
         )
       )
