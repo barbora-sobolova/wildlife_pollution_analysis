@@ -146,32 +146,27 @@ for (covariate in names(barplots_covariates)) {
     aes(x = Park, fill = .data[[covariate]])
   ) +
     geom_bar(
-      position = "fill",
       width = 0.90,
       linewidth = 0.2,
       color = "gray10"
     ) +
     scale_fill_manual(values = barplot_colors[[covariate]]) +
-    scale_y_continuous(
-      breaks = seq(0, 1, by = 0.2),
-      labels = paste0(seq(0, 100, by = 20), "%")
-    ) +
     scale_x_discrete(labels = park_labels) +
-    labs(y = "", title = covariate) +
+    labs(title = covariate, y = "Number of observations") +
     get_barplot_descriptive_theme()
 }
 barplot_month <- ggplot(dat, aes(x = Month, fill = Park)) +
   geom_bar(position = position_stack(), linewidth = 0.2, color = "gray10") +
   scale_fill_manual(values = park_colors) +
   scale_x_date(date_breaks = "2 months", date_labels = "%b %Y") +
-  labs(title = "Month of sample collection") +
+  labs(title = "Month of sample collection", y = "Number of observations") +
   get_barplot_descriptive_theme()
 
 barplots <- barplot_month +
   barplots_covariates$Sex +
   barplots_covariates$Age +
   barplots_covariates$Species +
-  plot_layout(nrow = 2, ncol = 2)
+  plot_layout(nrow = 2, ncol = 2, axis_titles = "collect_y")
 
 ggsave("figure/descriptive_barplots.pdf", barplots, width = 10, height = 6.5)
 
