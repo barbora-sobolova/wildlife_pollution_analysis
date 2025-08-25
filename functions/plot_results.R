@@ -7,7 +7,7 @@ plot_results <- function(
   non_park_comparison = FALSE
 ) {
   # List to store the plots
-  plt <- vector("list", 6)
+  plt <- vector("list", 5)
   names(plt) <- c("spline", "reg_coeffs", "boxplot", "barplot", "composite")
 
   # Get the plot elements
@@ -61,6 +61,7 @@ plot_results <- function(
   if (non_park_comparison) {
     df_coeffs <- df_park
     covcat_colors <- park_colors
+    coeff_plot_title <- "Park regression coefficients"
     # Add the two placeholder columns for consistency with the age+park path.
     df_boxbar <- df_filtered |>
       mutate(Covariate = "Park", Covariate_category = Park)
@@ -95,7 +96,8 @@ plot_results <- function(
     names(covcat_colors) <- df_coeffs$coeff
     x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
-
+    coeff_plot_title <- "Park regression coefficients"
+    
     # For the descriptive box- and barplot, concatenate the Park and Age
     # covariates
     df_boxbar <- df_filtered |>
@@ -159,7 +161,7 @@ plot_results <- function(
       x = NULL,
       y = NULL,
       fill = "Coefficient values\n(higher = more polluted)",
-      title = "Park and age regression coefficients"
+      title = coeff_plot_title
     ) +
     scale_fill_gradient2(
       low = "royalblue",
