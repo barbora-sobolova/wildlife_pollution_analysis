@@ -131,6 +131,11 @@ plot_results <- function(
       data = spline_curve,
       aes(x = Date_of_sample_collection, y = fit)
     ) +
+    geom_point(
+      data = ~ subset(df_filtered, Detected_by_category == "Quantified"),
+      aes(x = Date_of_sample_collection, y = Value_sum_quantified_by_category),
+      shape = 1
+    ) +
     geom_ribbon(
       data = spline_curve,
       aes(x = Date_of_sample_collection, ymin = lower, ymax = upper),
@@ -142,7 +147,15 @@ plot_results <- function(
       title = "Penalized spline for the date variable (intercept included)",
       y = bquote("Concentration in" ~ mu * "g" ~ kg^-1)
     ) +
-    coord_cartesian(ylim = c(0, NA))
+    coord_cartesian(
+      ylim = c(
+        0, 
+        max(
+          quantile(df_filtered$Value_sum_quantified_by_category, 0.95),
+          spline_curve$upper + 1
+            )
+        )
+      )
 
   # Breaks of the color gradient for the categorical coefficients. Needs to be
   # determined manually.
