@@ -49,8 +49,6 @@ fit_interval_reg <- function(
   # quite specific, because it's done for both the main analysis and the
   # comparison with the roe deer data.
   df_detected_by_category <- df_detected_by_category |>
-    # Filter out observations, where we have no date. This should be only A60.
-    filter(Sample_number != "A60") |>
     mutate(
       # Convert the categorical variables to factors to keep the levels in the
       # correct order everywhere
@@ -79,7 +77,7 @@ fit_interval_reg <- function(
     # For the main deer data convert also the age variable to factor.
     df_detected_by_category <- df_detected_by_category |>
       mutate(
-        Age = factor(Age, levels = c("Calf", "Subadult", "Adult"))
+        Age = factor(Age, levels = c("Fawn", "Subadult", "Adult"))
       )
   }
 

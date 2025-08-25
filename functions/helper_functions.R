@@ -25,7 +25,7 @@ relabel_age <- function(x) {
   case_when(
     x == "adult" ~ "Adult",
     x == "subadult" ~ "Subadult",
-    x == "Kalb" ~ "Calf"
+    x == "Kalb" ~ "Fawn"
   )
 }
 
@@ -52,13 +52,13 @@ age_category_from_extra_column <- function(age, age_numeric = TRUE) {
   if (age_numeric) {
     age <- as.numeric(age)
     case_when(
-      age == 0.5 ~ "Calf",
+      age == 0.5 ~ "Fawn",
       age > 0.5 & age <= 1.5 ~ "Subadult",
       age > 1.5 ~ "Adult"
     )
   } else {
     case_when(
-      age %in% c("Altersklasse 0", "Altersklasse 0\r\n") ~ "Calf",
+      age %in% c("Altersklasse 0", "Altersklasse 0\r\n") ~ "Fawn",
       age %in% c("Altersklasse 1", "Altersklasse 1\r\n") ~ "Subadult",
       age %in% c("Altersklasse 2", "Altersklasse 2\r\n") ~ "Adult"
     )
@@ -104,9 +104,21 @@ rename_columns <- function(x) {
 
 # Functions for data processing ================================================
 
-# Function determining, whether a pollutant category was quantified, detected,
-# or not detected. Input is a character vector of detection indicators for
-# individual chemical.
+#' Function determining the overall detection status of a chemical category
+#'
+#' @param x A character vector of possible values "Not detected", "Detected",
+#'   "Quantified" for individual chemicals
+#' @return A string indicating the aggregated status of "Not detected",
+#'   "Detected" and "Quantified" for the whole category of chemical substances
+#' @details Overall detection status:
+#'    \begin{itemize}
+#'      \item "Quantified": At least one sample in a category contains a
+#'      quantified value.
+#'      \item "Detected": No sample contains a quantified value and at least one
+#'      sample in a category contains a detected value under the quantification
+#'      limit.
+#'      \item "Not detected": All samples are non-detects.
+#'    \end{itemize}
 summarise_detection <- function(x) {
   if (all(x == "Not detected")) {
     # Category was not detected, when no chemicals from the category were
@@ -124,54 +136,54 @@ summarise_detection <- function(x) {
   ret
 }
 
-# This function creates a range per a chemical category, where the sum of all
-# observed values lie. This accounts for the censoring when a chemical is
-# detected only qualitatively.
-# IMPORTANT: When a chemical was not detected, we consider these observations as
-# zeros, but set them to a small value close to zero, e.g. 1e-4 in order to be
-# able to fit a lognormal model. When a chemical was detected only
-# qualitatively, we assume these to lie anywhere between 0 and their detection
-# threshold.
+#' Function creating a range for the aggregate concentration value per chemical
+#' category
+#'
+#' @description This function creates a range per chemical category, where the
+#'    sum of all observed values lie. This accounts for the censoring when a
+#'    chemical is detected only qualitatively, or not detected at all.
+#' @param detected A character vector indicating detection with possible values
+#'    "Not detected", "Detected", "Quantified" for individual chemicals
+#' @param value A numeric vector containing the concentration values for the
+#'    quantified measurements and NA for the rest
+#' @param threshold A numeric vector containing the quantification thresholds of
+#'    individual chemicals
+#' @return A named numeric vector of length 2 with elements:
+#'    \code{Value_min} and \code{Value_max} defining the lower and upper bounds
+#'    (best and worst case values) for the aggregated concentration in the
+#'    category
+#' @details When a chemical was not detected, or not quantified we consider
+#'    these observations to be anywhere between zero and the quantification
+#'    threshold, but set the lower bound to a small value close to zero, e.g.
+#'    1e-6 in order to be able to fit a lognormal model.
+#'    Definition of the aggregated value range:
+#'    \begin{itemize}
+#'      \item For all samples containing only non-detects or non-quantifiable
+#'      values, the best case is a (near) 0 value and the worst case is the sum
+#'      of the quantification thresholds (LOQ).
+#'      \item When at least one value is quantified, the best value is the sum
+#'      of all quantified values and than the sum of the quantification
+#'      thresholds is added to account for non-detects and non-quantifiable
+#'      values.
+#'    \end{itemize}
 summarise_censoring <- function(detected, value, threshold) {
-  vals_sum <- sum(value, na.rm = TRUE)
-  if (all(detected == "Not detected")) {
-    # The aggregated minimum value is set as (near) zero, the max value is the
-    # sum of LOQs (the worst scenario)
-    ret <- c(
-      censored = "Non-detect",
-      Value_min = 1e-6,
-      # Treat the non-detects just like the non-quantified values, because we
-      # do not have the limits of detection. As it stands, the model is not able
-      # to estimate some coefficients for the Industrial chemical category.
-      Value_max = sum(threshold)
-    )
-  } else if (
-    all(detected == "Quantified" | detected == "Not detected") &&
-      !all(detected == "Not detected")
-  ) {
-    # The aggregated value is a sum of the quantified values with no
-    # uncertainty. Not detected values are treated as zeros.
-    ret <- c(
-      censored = "Fully quantified",
-      Value_min = vals_sum,
-      Value_max = vals_sum
-    )
-  } else if (any(detected == "Detected")) {
-    # The aggregated value of the detected part lies between 0 and the sum of
-    # thresholds. Then the quantified part is added.
-    ret <- c(
-      censored = "Left censored",
-      Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
-      Value_max = vals_sum + sum(threshold[detected == "Detected"])
-    )
-  }
+  vals_sum <- sum(value[detected == "Quantified"], na.rm = TRUE)
+  ret <- c(
+    Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
+    Value_max = vals_sum + sum(threshold[detected != "Quantified"])
+  )
   ret
 }
 
-# Function for removing the information on year from a date by unifying it to
-# an (almost) arbitrary year 2022/2023. The only non-arbitrary thing is that
-# 2023 was not a leap year. We will have to think about it again, if we ever
-# get samples from 29.02.
+#' Function for removing information on year
+#'
+#' @description This function sets the year component of a date to an (almost)
+#'    arbitrary year 2022/2023 (2023 for January and February, 2022 for the
+#'    rest). The only non-arbitrary aspect is that 2023 was not a leap year.
+#'    This is not a concern, since we never get observations from 29 February.
+#' @param date_vec A vector of values in a date format
+#' @return A vector of values in a date format with the year set to 2022, or
+#'    2023
 unify_year <- function(date_vec) {
   str_m_d <- paste(
     stringr::str_pad(month(date_vec), pad = "0", side = "left", width = 2),
@@ -223,6 +235,25 @@ extract_reg_coeffs <- function(
         levels = names(get_p_val_cat_linewidth())
       )
     )
+}
+
+# Function for saving the data as an Excel spreadsheet =========================
+
+save_data_as_xls <- function(dat) {
+  # Create a new workbook
+  wb <- openxlsx::createWorkbook()
+
+  # Extract parks
+  park <- unique(dat$Park)
+
+  # Loop through parks and add each summary to a sheet
+  for (k in seq_along(park)) {
+    data_chunk <- dat |> filter(Park == park[k]) |> select(-Park)
+    sheet_name <- as.character(park[k])
+    openxlsx::addWorksheet(wb, sheet_name)
+    openxlsx::writeData(wb, sheet = sheet_name, data_chunk, rowNames = FALSE)
+  }
+  wb
 }
 
 # Functions for saving the regression results ==================================
