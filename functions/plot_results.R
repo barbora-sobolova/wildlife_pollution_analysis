@@ -171,7 +171,7 @@ plot_results <- function(
       data = df_coeffs,
       mapping = aes(x = coeff, y = dummy_value, label = formatted_coeff_label),
       size = 3
-      ) +
+    ) +
     labs(
       x = NULL,
       y = NULL,
