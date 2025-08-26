@@ -395,15 +395,16 @@ ggsave(
 
 # Plot of segments per sample ==================================================
 df_segments <- df_detected_by_category |>
-  mutate(Park = factor(Park, levels = names(get_park_colors()))) |>
+  mutate(Park = factor(Park, levels = names(park_colors))) |>
   group_by(primary_category, Park) |>
   mutate(
-    ordering = 1:n() + 0.1 * as.numeric(Park)
+    ordering = 1:n() + 0.08 * as.numeric(Park)
   ) |>
   # Eliminate 4 outliers that skew the picture, in particular Z18 for the
   # Industrial chemical category and Z79, G32 and F11 for the Plasticizer
   # category
-  filter(Value_min < 150)
+  filter(Value_min < 150) |> 
+  ungroup()
 
 ggplot(
   df_segments,
@@ -416,7 +417,7 @@ ggplot(
   )
 ) +
   geom_segment(linewidth = 0.1) +
-  scale_color_manual(values = get_park_colors(), labels = get_park_labels()) +
+  scale_color_manual(values = park_colors, labels = park_labels) +
   labs(
     title = "LOQ only",
     x = NULL,
@@ -427,4 +428,4 @@ ggplot(
   ) +
   facet_wrap(~primary_category, nrow = 4, scales = "free_y") +
   theme(legend.key.height = unit(0.85, "cm"))
-ggsave("figure/data_segements.pdf", width = 8, height = 6)
+ggsave("figure/data_segments.pdf", width = 8, height = 6)
