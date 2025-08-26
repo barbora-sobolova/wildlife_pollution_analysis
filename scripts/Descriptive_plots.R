@@ -403,7 +403,7 @@ df_segments <- df_detected_by_category |>
   # Eliminate 4 outliers that skew the picture, in particular Z18 for the
   # Industrial chemical category and Z79, G32 and F11 for the Plasticizer
   # category
-  filter(Value_min < 150) |> 
+  filter(Value_min < 150) |>
   ungroup()
 
 ggplot(
