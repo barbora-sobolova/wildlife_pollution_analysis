@@ -118,7 +118,7 @@ ggplot_box_legend <- function(family = "sans") {
       "quantified",
       "detected only\nqualitatively",
       "National park",  # Title
-      "Occurence\nof pollutants\n(left panel):"  # Title
+      "Occurrence\nof pollutants\n(left panel):"  # Title
     ),
     Size = c(rep("Label_text", length(park_labels) + 2), rep("Title", 2))
   )
