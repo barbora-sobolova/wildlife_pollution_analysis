@@ -29,7 +29,7 @@ get_park_labels <- function(non_park_comparison = FALSE) {
     "Vorpomm" = "Vorpomm. \nBoddenldsch."
   )
   if (non_park_comparison) {
-    labs <- c(labs, "Non-Park" = "Non-Park")
+    labs <- c(labs, "Non-Park" = "non-Park")
   }
   labs
 }
