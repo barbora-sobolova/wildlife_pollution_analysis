@@ -58,7 +58,11 @@ results_roe <- fit_interval_reg(
 
 # Save the plots
 save_results_as_image(results_roe$plt, non_park_comparison = TRUE)
-save_results_as_image(results_roe$plt, format = "png", non_park_comparison = TRUE)
+save_results_as_image(
+  results_roe$plt,
+  format = "png",
+  non_park_comparison = TRUE
+)
 
 # Save the results into a .csv file
 results_csv_roe <- save_results_as_csv(results_roe$fitted_mods)
