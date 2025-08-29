@@ -181,6 +181,7 @@ barplots <- barplot_month +
   plot_layout(nrow = 2, ncol = 2, axis_titles = "collect_y")
 
 ggsave("figure/descriptive_barplots.pdf", barplots, width = 10, height = 6.5)
+ggsave("figure/descriptive_barplots.png", barplots, width = 10, height = 6.5)
 
 # Mosaic plots =================================================================
 
@@ -225,6 +226,7 @@ mosaic_sex <- ggplot(
   ) +
   get_mosaicplot_theme()
 ggsave("figure/mosaic_sex.pdf", mosaic_sex, width = 12, height = 8)
+ggsave("figure/mosaic_sex.png", mosaic_sex, width = 12, height = 8)
 
 
 # Mosaic plot by species
@@ -262,6 +264,7 @@ mosaic_species <- ggplot(
   ) +
   get_mosaicplot_theme()
 ggsave("figure/mosaic_species.pdf", mosaic_species, width = 10, height = 8)
+ggsave("figure/mosaic_species.png", mosaic_species, width = 10, height = 8)
 
 # Mosaic plot by age
 mosaic_age <- ggplot(
@@ -307,6 +310,7 @@ mosaic_age <- ggplot(
   ) +
   get_mosaicplot_theme()
 ggsave("figure/mosaic_age.pdf", mosaic_age, width = 12, height = 8)
+ggsave("figure/mosaic_age.png", mosaic_age, width = 12, height = 8)
 
 # Detection box- and barplots ==================================================
 
@@ -400,6 +404,12 @@ concentrations <- barplot_quantified +
 
 ggsave(
   "figure/substances_quantified.pdf",
+  concentrations,
+  width = 8,
+  height = 8
+)
+ggsave(
+  "figure/substances_quantified.png",
   concentrations,
   width = 8,
   height = 8
