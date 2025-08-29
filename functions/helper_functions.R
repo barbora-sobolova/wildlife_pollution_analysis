@@ -154,8 +154,7 @@ summarise_detection <- function(x) {
 #'    category
 #' @details When a chemical was not detected, or not quantified we consider
 #'    these observations to be anywhere between zero and the quantification
-#'    threshold, but set the lower bound to a small value close to zero, e.g.
-#'    1e-6 in order to be able to fit a lognormal model.
+#'    threshold.
 #'    Definition of the aggregated value range:
 #'    \begin{itemize}
 #'      \item For all samples containing only non-detects or non-quantifiable
