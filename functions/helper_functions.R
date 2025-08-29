@@ -153,15 +153,15 @@ summarise_detection <- function(x) {
 #'    (best and worst case values) for the aggregated concentration in the
 #'    category
 #' @details When a chemical was not detected, or not quantified we consider
-#'    these observations to be anywhere between zero and the quantification
+#'    these observations to be anywhere between 0 and the quantification
 #'    threshold.
 #'    Definition of the aggregated value range:
 #'    \begin{itemize}
 #'      \item For all samples containing only non-detects or non-quantifiable
-#'      values, the best case is a (near) 0 value and the worst case is the sum
-#'      of the quantification thresholds (LOQ).
+#'      values, the best case is 0 and the worst case is the sum of the
+#'      quantification thresholds (LOQ).
 #'      \item When at least one value is quantified, the best value is the sum
-#'      of all quantified values and than the sum of the quantification
+#'      of all quantified values and then the sum of the quantification
 #'      thresholds is added to account for non-detects and non-quantifiable
 #'      values.
 #'    \end{itemize}
