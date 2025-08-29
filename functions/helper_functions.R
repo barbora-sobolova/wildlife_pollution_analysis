@@ -353,6 +353,15 @@ save_results_as_image <- function(
         format
       )
     }
-    suppressWarnings(ggsave(file_name, plot_list[[k]], width = 11, height = 9))
+    suppressWarnings(
+      ggsave(
+        file_name,
+        plot_list[[k]],
+        width = 11,
+        height = 9,
+        dpi = 400,
+        bg = "white"
+      )
+    )
   }
 }
