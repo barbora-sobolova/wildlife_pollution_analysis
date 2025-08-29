@@ -169,7 +169,7 @@ summarise_detection <- function(x) {
 summarise_censoring <- function(detected, value, threshold) {
   vals_sum <- sum(value[detected == "Quantified"], na.rm = TRUE)
   ret <- c(
-    Value_min = ifelse(vals_sum == 0, 1e-6, vals_sum),
+    Value_min = vals_sum,
     Value_max = vals_sum + sum(threshold[detected != "Quantified"])
   )
   ret
