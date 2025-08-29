@@ -170,7 +170,7 @@ barplot_month <- ggplot(dat, aes(x = Month, fill = Park)) +
   labs(
     title = "Month of sample collection",
     y = "number of observations",
-    x = "park"
+    x = "month"
   ) +
   get_barplot_descriptive_theme()
 
