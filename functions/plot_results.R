@@ -97,7 +97,7 @@ plot_results <- function(
         unlist()
     )
     names(covcat_colors) <- df_coeffs$coeff
-    x_labels_coeffs <- c(x_labels_coeffs, get_age_labels())
+    x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
     names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
     coeff_plot_title <- "Park regression coefficients"
 

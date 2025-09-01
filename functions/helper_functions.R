@@ -23,9 +23,9 @@ relabel_sex <- function(x) {
 # vector of the age category names.
 relabel_age <- function(x) {
   case_when(
-    x == "adult" ~ "Adult",
-    x == "subadult" ~ "Subadult",
-    x == "Kalb" ~ "Fawn"
+    x == "adult" ~ "adult",
+    x == "subadult" ~ "subadult",
+    x == "Kalb" ~ "fawn"
   )
 }
 
@@ -41,15 +41,15 @@ age_category_from_extra_column <- function(age, age_numeric = TRUE) {
   if (age_numeric) {
     age <- as.numeric(age)
     case_when(
-      age == 0.5 ~ "Fawn",
-      age > 0.5 & age <= 1.5 ~ "Subadult",
-      age > 1.5 ~ "Adult"
+      age == 0.5 ~ "fawn",
+      age > 0.5 & age <= 1.5 ~ "subadult",
+      age > 1.5 ~ "adult"
     )
   } else {
     case_when(
-      age %in% c("Altersklasse 0", "Altersklasse 0\r\n") ~ "Fawn",
-      age %in% c("Altersklasse 1", "Altersklasse 1\r\n") ~ "Subadult",
-      age %in% c("Altersklasse 2", "Altersklasse 2\r\n") ~ "Adult"
+      age %in% c("Altersklasse 0", "Altersklasse 0\r\n") ~ "fawn",
+      age %in% c("Altersklasse 1", "Altersklasse 1\r\n") ~ "subadult",
+      age %in% c("Altersklasse 2", "Altersklasse 2\r\n") ~ "adult"
     )
   }
 }
