@@ -39,7 +39,14 @@ check_age_categories <- function(data) {
 check_complete_entries <- function(data) {
   entries_incomplete <- data |>
     dplyr::select(
-      c("Sample_number", "Species", "Sex", "Age", "Park")
+      c(
+        "Sample_number",
+        "Species",
+        "Sex",
+        "Age",
+        "Park",
+        "Date_of_sample_collection"
+      )
     ) |>
     anyNA()
 

@@ -57,17 +57,22 @@ process_data <- function(dat, chem_categories) {
       values_to = "Value"
     ) |>
     mutate(
-      # Throws 2 warnings, because we use as.numeric() and grepl() on NA values,
-      # but it is OK
       detected = case_when(
         # When a cell is empty, the chemical was not detected
         is.na(Value) ~ "not detected",
         # Not quantified values contain the "<" character
         grepl("<", Value) ~ "detected",
-        # Quantified values are values that can be converted to a numeric
-        !is.na(as.numeric(Value)) ~ "quantified"
+        # Quantified values are values that can be converted to a numeric.
+        # We suppress warnings, because some of the `Value` values are NAs,
+        # representing the non-detects, which then make `as.numeric()` to throw
+        # a warning, even though everything is fine.
+        !is.na(suppressWarnings(as.numeric(Value))) ~ "quantified"
       ),
-      Value = ifelse(detected == "quantified", as.numeric(Value), NA)
+      Value = ifelse(
+        detected == "quantified",
+        suppressWarnings(as.numeric(Value)),
+        NA_real_
+      )
     )
 
   # Assign the category to the chemicals. `chem_categories` contain everything

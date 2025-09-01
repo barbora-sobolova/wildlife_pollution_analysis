@@ -66,13 +66,6 @@ fit_interval_reg <- function(
         min(as.numeric(Date_of_sample_collection))
     )
 
-  # Check for unexpected NA dates after removing known problematic samples
-  if (any(is.na(df_detected_by_category$Date_of_sample_collection))) {
-    warning(
-      "Unexpected NA values found in Date_of_sample_collection after filtering known samples. Dataset may need re-examination."  # nolint
-    )
-  }
-
   if (!non_park_comparison) {
     # For the main deer data convert also the age variable to factor.
     df_detected_by_category <- df_detected_by_category |>
