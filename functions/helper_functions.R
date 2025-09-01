@@ -362,7 +362,7 @@ save_results_as_image <- function(
   format = c("png", "pdf"),
   non_park_comparison = FALSE
 ) {
-  format <- match.arg(format)  
+  format <- match.arg(format)
 
   # Loop through models and save each in a desired format
   for (k in seq_along(plot_list)) {
