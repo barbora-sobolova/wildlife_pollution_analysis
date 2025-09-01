@@ -54,11 +54,7 @@ df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
       levels = c("adult", "subadult", "fawn"),
       ordered = TRUE
     ),
-    Species = factor(Species, levels = c("D. dama", "C. elaphus")),
-    Season = factor(
-      Season,
-      levels = c("Summer 2024", "Winter 2024/25", "Winter 2023/24")
-    )
+    Species = factor(Species, levels = c("D. dama", "C. elaphus"))
   ) |>
   # Filter out the A60 observation, which is excluded also during the analysis
   filter(Sample_number != "A60")
