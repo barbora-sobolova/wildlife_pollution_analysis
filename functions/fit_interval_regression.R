@@ -55,7 +55,7 @@ fit_interval_reg <- function(
       Park = factor(Park, levels = names(get_park_colors(non_park_comparison))),
       Detected_by_category = factor(
         Detected_by_category,
-        levels = c("Quantified", "Detected", "Not detected")
+        levels = c("quantified", "detected", "not detected")
       ),
       # Place the dates from different years into a single year cycle.
       # This normalization helps align seasonal patterns across different years
