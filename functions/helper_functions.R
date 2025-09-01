@@ -359,7 +359,7 @@ save_results_as_csv <- function(fitted_model_list) {
 
 save_results_as_image <- function(
   plot_list,
-  format = c("pdf", "png"),
+  format = c("png", "pdf"),
   non_park_comparison = FALSE
 ) {
   format <- match.arg(format)  
