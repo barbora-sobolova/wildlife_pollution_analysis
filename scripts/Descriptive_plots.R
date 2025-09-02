@@ -74,7 +74,7 @@ dat <- read_csv("data/clean_data.csv") |>
   ) |>
   # Filter out the Z91 observation, which is excluded also during the analysis.
   # It is the one far from the bulk of the observations.
-  filter(Sample_number != "Z91") |> 
+  filter(Sample_number != "Z91") |>
   # Convert the measurements to character to avoid problems when pivoting
   mutate(across(-c(Age, Species, Sex, Park, Month), as.character))
 
