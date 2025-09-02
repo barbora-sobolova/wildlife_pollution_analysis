@@ -2,25 +2,27 @@
 
 This repository contains code performing a statistical analysis of pollution levels in German national parks. We examine differences between individual parks by analyzing measurements of concentration of chemical substances, recognized as environmental pollutants, that were found in samples of deer liver.
 
-## Data processing
+## Data cleaning
 
 The [data](https://github.com/barbora-sobolova/wildlife_pollution_analysis/tree/main/data) folder contains 2 batches of raw data samples from *Cervus elaphus* and *Dama dama* species:
 - [`Auswertung_Winter23_24.xlsx`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/20250120_Auswertung_Winter23_24.xlsx),
 - [`20250627_Auswertung_Sommer24.xlsx`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/20250627_Auswertung_Sommer24.xlsx),
 
 An additional dataset of older samples from the *Capreolus capreolus* species is used for a complementary analysis:
-- [`Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx)
-
-Note that this set also contains samples form wild boars, which are not used.
+- [`Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/Daten_Wildtiere_Sachsen_ohne_PFAS.xlsx) (Note that this set also contains samples form wild boars, which are ignored.)
 
 The following files are present both in the CSV format and as an Excel spreadsheet. Their contents are identical.
 - [`clean_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/clean_data.csv)
-  - Produced by the [`Clean_the_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_data.R) script.
+  - Produced by the [`Clean_the_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_data.R) script.
   - Cleaned and harmonised data from the 2 data batches in a wide format.
-  - All samples here enter into the analysis (with the exception of Z91, see below).
+  - We [fix entries](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Clean_the_data.R#L101-L114) that are entered wrong in the raw data file.
+  - We [filter observations](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Clean_the_data.R#L79-L85) that shall not enter the analysis.
 - [`clean_roe_deer_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/clean_roe_deer_data.csv)
-  - Produced by the [`Clean_the_roe_deet_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_roe_deer_data.R) script.
+  - Produced by the [`Clean_the_roe_deet_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_roe_deer_data.R) script.
   - Cleaned and harmonised data from the additional dataset.
+ 
+## Data processing
+
 - [`data_by_pollutant_category`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/data_by_pollutant_category.csv)
   - Produced by the [`Process_the_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script.
   - Data with values aggregated (summed) by a pollutant category.
@@ -67,7 +69,11 @@ The park explanatory variable indicates in which park a sample was collected and
 - Vorpommersche Boddenlandschaft
 
 ### Day of the sample collection
-The samples of the main dataset were collected from 1. August 2023 to 31. January 2025, always during the hunting season creating a gap with no observations during the spring and early summer months. For this reason we consider only the day of the year for the model fitting.
+The samples of the main dataset were collected from 1. August 2023 to 31. January 2025, always during the hunting season creating a gap with no observations during the spring and early summer months. For this reason we disregard the information about the year and consider only the day of the year for the model fitting. One observation (Z91) was collected on 29. May, which again creates a gap between the bulk of the observations and this single one. As a result, we [remove it](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Fit_interval_reg.R#L18C1-L22C33) before the model fitting.
+
+For the additional dataset, we have observations from the spring and summer too. Therefore, the timeline there spans 1. August to 9. July and we do use observation Z91 here.
+
+The 'throwing away' of the year information takes place in the [`unify_year`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/functions/helper_functions.R#L175-L186) function.
 
 ## Reproducibility
 All code was run using `R` version **4.5.0**  with the following packages
