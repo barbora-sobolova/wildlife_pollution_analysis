@@ -127,7 +127,6 @@ plot_results <- function(
   ) +
     geom_ribbon(alpha = 0.5) +
     geom_line() +
-    geom_hline(yintercept = 1, linetype = "dotted") +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
     labs(
       x = "date",
@@ -135,6 +134,11 @@ plot_results <- function(
       title = "Penalized spline for the date variable"
     ) +
     coord_cartesian(ylim = c(0, NA))
+
+  # If we center the curve, plot a horizontal line going through 1
+  if (centered) {
+    plt$spline <- plt$spline + geom_hline(yintercept = 1, linetype = "dotted")
+  }
 
   # Breaks of the color gradient for the categorical coefficients. Needs to be
   # determined manually.
