@@ -1,3 +1,5 @@
+library("tidyverse")
+library("survival")
 source(here::here("functions", "fit_interval_regression.R"))
 source(here::here("functions", "helper_functions.R"))
 source(here::here("functions", "plot_elements.R"))
@@ -18,7 +20,7 @@ test_that("Manual calculation of the spline fit is correct", {
     as.numeric()
   
   # Fit the model
-  results <- fit_interval_reg(df_detected_by_category, plot_results = FALSE)
+  results <- fit_interval_reg(df_detected_by_category, return_plots = FALSE)
   
   # New data frame for the `predict()` function
   newdata <- data.frame(
