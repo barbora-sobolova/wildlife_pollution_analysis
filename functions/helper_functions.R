@@ -200,10 +200,16 @@ get_excluded_categories <- function() {
 
 # Functions for the construction of confidence intervals =======================
 
+# Function calculating the confidence intervals of the spline curve manually
+# using the delta method. We can return the curve without the intercept or
+# completely centered.
+# Note: Removing the intercept affects the confidence intervals, centering does
+# not.
 calculate_spline_ci <- function(
   fitted_survreg_model,
   timeline_length,
-  intercept = FALSE
+  intercept = FALSE,
+  centered = FALSE
 ) {
   # Prepare the time sequence of the spline. We always start from 0.
   # 'timeline_length' is the highest value of the `Date_numeric` column of our
@@ -233,8 +239,14 @@ calculate_spline_ci <- function(
   vcov_fitted_ps <- vcov_fitted[where_ps_coeffs, where_ps_coeffs]
   coeffs_ps <- coeffs[where_ps_coeffs]
 
-  # Calculate the fit on the response scale
-  fit_ps <- exp(basis_ps %*% coeffs_ps)
+  # Calculate the fit on the response scale, possibly centered
+  if (centered) {
+    basis_ps_centered <- basis_ps - 
+      rep(1, nrow(basis_ps)) %*% t(apply(basis_ps, 2, mean))
+    fit_ps <- exp(basis_ps_centered %*% coeffs_ps)
+  } else {
+    fit_ps <- exp(basis_ps %*% coeffs_ps)
+  }
 
   # Calculate the standard errors on the response scale using the delta method
   se_ps <- fit_ps * sqrt(diag(basis_ps %*% vcov_fitted_ps %*% t(basis_ps)))

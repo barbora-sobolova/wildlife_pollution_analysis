@@ -4,7 +4,9 @@ plot_results <- function(
   fitted_survreg_model,
   pollutant_category,
   all_plots = FALSE,
-  non_park_comparison = FALSE
+  non_park_comparison = FALSE,
+  intercept = FALSE,
+  centered = TRUE
 ) {
   # List to store the plots
   plt <- vector("list", 5)
@@ -27,7 +29,8 @@ plot_results <- function(
   spline_curve <- calculate_spline_ci(
     fitted_survreg_model,
     max(df_filtered$Date_numeric),
-    intercept = FALSE
+    intercept = intercept,
+    centered = centered
   ) |> mutate(
     Date_of_sample_collection = seq(
       min(df_filtered$Date_of_sample_collection),
@@ -123,6 +126,7 @@ plot_results <- function(
     aes(x = Date_of_sample_collection, y = fit, ymin = lower, ymax = upper)
   ) +
     geom_line() +
+    geom_hline(yintercept = 1, linetype = "dotted") +
     geom_ribbon(alpha = 0.5) +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
     labs(
