@@ -241,7 +241,7 @@ calculate_spline_ci <- function(
 
   # Calculate the fit on the response scale, possibly centered
   if (centered) {
-    basis_ps_centered <- basis_ps - 
+    basis_ps_centered <- basis_ps -
       rep(1, nrow(basis_ps)) %*% t(apply(basis_ps, 2, mean))
     fit_ps <- exp(basis_ps_centered %*% coeffs_ps)
   } else {
