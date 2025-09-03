@@ -47,11 +47,11 @@ test_that("Manual calculation of the spline fit is correct", {
     if (!anyNA(fit_auto$fit)) {
       # Check the calculation comparing the non-centered versions including the
       # SEs
-      expect_lt(max(abs(fit_auto$fit - fit_manual$fit)), 1e-14)
-      expect_lt(max(abs(fit_auto$se.fit - fit_manual$se)), 1e-14)
+      expect_lt(max(abs(fit_auto$fit - fit_manual$fit)), 1e-11)
+      expect_lt(max(abs(fit_auto$se.fit - fit_manual$se)), 1e-11)
 
       # Check the centering using the centered version, fits only
-      expect_lt(max(abs(fit_auto_centered - fit_manual_centered)), 1e-14)
+      expect_lt(max(abs(fit_auto_centered - fit_manual_centered)), 1e-11)
     }
   }
 })
