@@ -17,7 +17,7 @@
 #'    generated
 #' @param intercept A logical flag indicating, whether to include the intercept
 #'    in the graphical display of the spline curve
-#' @param return_plots A logical flag indicating, whether to center the spline
+#' @param centered A logical flag indicating, whether to center the spline
 #'    curve in the graphical display
 #' @return A list with 2 components: list of the fitted models and list of the
 #'    plots
