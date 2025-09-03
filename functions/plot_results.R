@@ -143,6 +143,7 @@ plot_results <- function(
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
     labs(
       x = "date",
+      y = bquote("concentration in" ~ mu * "g" ~ kg^-1),
       title = "Penalized spline for the date variable"
     ) +
     coord_cartesian(ylim = c(0, NA))
