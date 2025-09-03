@@ -230,7 +230,7 @@ calculate_spline_ci <- function(
   basis_ps <- pspline(spline_curve$Date_numeric) |> as.matrix()
 
   # Locate the coefficients corresponding to the spline.
-  where_ps_coeffs <- grep("ps", names(coeffs))
+  where_ps_coeffs <- grep("ps()", names(coeffs))
   if (intercept) {
     # Add the intercept to the calculations, if required
     where_ps_coeffs <- c(1, where_ps_coeffs)

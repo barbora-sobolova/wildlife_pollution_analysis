@@ -125,9 +125,9 @@ plot_results <- function(
     spline_curve,
     aes(x = Date_of_sample_collection, y = fit, ymin = lower, ymax = upper)
   ) +
+    geom_ribbon(alpha = 0.5) +
     geom_line() +
     geom_hline(yintercept = 1, linetype = "dotted") +
-    geom_ribbon(alpha = 0.5) +
     scale_x_date(date_breaks = "1 month", date_labels = "%d %b") +
     labs(
       x = "date",
