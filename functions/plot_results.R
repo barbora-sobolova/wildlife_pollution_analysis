@@ -27,7 +27,7 @@ plot_results <- function(
   spline_curve <- calculate_spline_ci(
     fitted_survreg_model,
     max(df_filtered$Date_numeric),
-    intercept = TRUE
+    intercept = FALSE
   ) |> mutate(
     Date_of_sample_collection = seq(
       min(df_filtered$Date_of_sample_collection),
