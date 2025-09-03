@@ -22,6 +22,7 @@ jobs:
             any::testthat
             any::here
             any::purrr
+          needs: check
 
       - name: Run tests
         run: | 
