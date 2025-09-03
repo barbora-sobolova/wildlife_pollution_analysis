@@ -29,6 +29,6 @@ jobs:
           needs: check
 
       - name: Run tests
-        run: | 
+        run: |
           testthat::test_dir("tests")
         shell: Rscript {0}
