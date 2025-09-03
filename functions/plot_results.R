@@ -20,22 +20,6 @@ plot_results <- function(
 
   # Display the spline =========================================================
 
-  # For calculating the fitted spline curve
-  newdata <- data.frame(
-    Date_numeric = seq(
-      from = min(df_filtered$Date_numeric),
-      to = max(df_filtered$Date_numeric),
-      by = 1
-    ),
-    Date_of_sample_collection = seq(
-      from = min(df_filtered$Date_of_sample_collection),
-      to = max(df_filtered$Date_of_sample_collection),
-      by = 1
-    ),
-    Park = "Bay_Wald",  # Reference category
-    Age = "fawn"  # Reference category
-  )
-
   # Calculate the spline fit and its CIs. We do it in a custom function, because
   # the `predict` function returns the fit including intercept, but we are more
   # interested in the effects (i.e. whether the fit is above, or below 1), than
