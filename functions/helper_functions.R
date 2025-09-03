@@ -241,6 +241,9 @@ calculate_spline_ci <- function(
 
   # Calculate the fit on the response scale, possibly centered
   if (centered) {
+    # We only center the fit in order to make the curve more interpretable.
+    # This does not affect the standard errors, because we just graphically
+    # shift the curve by a fixed distance with no uncertainty
     basis_ps_centered <- basis_ps -
       rep(1, nrow(basis_ps)) %*% t(apply(basis_ps, 2, mean))
     fit_ps <- exp(basis_ps_centered %*% coeffs_ps)
