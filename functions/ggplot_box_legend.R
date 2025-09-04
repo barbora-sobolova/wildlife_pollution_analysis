@@ -131,7 +131,6 @@ ggplot_box_legend <- function(boxplot_only = FALSE, family = "sans") {
     )
     df_labels <- rbind(df_boxplot_labels, df_rect_labels)
   }
-  
 
   # Create the legend ==========================================================
   explain_plot <- ggplot() +
@@ -164,20 +163,20 @@ ggplot_box_legend <- function(boxplot_only = FALSE, family = "sans") {
     theme(
       legend.position = "none"
     )
-  
+
   if (!boxplot_only) {
     explain_plot <- explain_plot +
-    # Square legend items
-    geom_point(
-      data = df_rect,
-      aes(x = x, y = y, fill = fill_color),
-      size = 8,
-      shape = 22
-    ) +
-    # Fill colors for the square legend items
-    scale_fill_manual(
-      values = c(park_colors, "quantified" = "gray10", "detected" = "gray60")
-    )
+      # Square legend items
+      geom_point(
+        data = df_rect,
+        aes(x = x, y = y, fill = fill_color),
+        size = 8,
+        shape = 22
+      ) +
+      # Fill colors for the square legend items
+      scale_fill_manual(
+        values = c(park_colors, "quantified" = "gray10", "detected" = "gray60")
+      )
   }
 
   explain_plot
