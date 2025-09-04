@@ -23,6 +23,7 @@
 #'    plots
 fit_interval_reg <- function(
   df_detected_by_category,
+  df_descriptive,
   non_park_comparison = FALSE,
   return_plots = TRUE,
   intercept = FALSE,
@@ -54,9 +55,7 @@ fit_interval_reg <- function(
     )
   }
 
-  # We remove certain observations inside this function, even though the task is
-  # quite specific, because it's done for both the main analysis and the
-  # comparison with the roe deer data.
+  # Prepare the data for fitting ===============================================
   df_detected_by_category <- df_detected_by_category |>
     mutate(
       # Convert the categorical variables to factors to keep the levels in the
@@ -147,6 +146,7 @@ fit_interval_reg <- function(
       if (return_plots) {
         plt_by_category[[k]] <- plot_results(
           df_filtered,
+          df_descriptive,
           mods_by_category[[k]],
           category_names[k],
           non_park_comparison = non_park_comparison,
