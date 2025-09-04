@@ -52,23 +52,6 @@ ggplot_box_legend <- function(boxplot_only = FALSE, family = "sans") {
     yend = quartiles[c(1, 3, 3)]
   )
 
-  # Where to draw the squares representing the fill colors of parks and
-  # the type of detection. The squares will be drawn using
-  # `geom_point(shape = 2)` with a large size instead of `geom_rect()`.
-  df_rect <- data.frame(
-    x = glyphs_position_x,
-    y = c(
-      # Draw from the title downwards
-      labels_position_y$Park - (seq_along(park_labels) * square_distance),
-      # Draw from the title downwards and add some space between the title and
-      # the legend items, as the title for the detection has multiple lines
-      labels_position_y$Detection -
-        (seq_len(2) * square_distance) -
-        0.5 * square_distance
-    ),
-    fill_color = c(names(park_colors), c("quantified", "detected"))
-  )
-
   # Set the coordinates of the text labels =====================================
 
   # Calculate coordinates, where to place text labels of the boxplot
@@ -109,6 +92,23 @@ ggplot_box_legend <- function(boxplot_only = FALSE, family = "sans") {
     df_labels[df_labels$Labels == "Concentration \n(right panel):", "Labels"] <-
       "Concentration:"
   } else {
+    # Where to draw the squares representing the fill colors of parks and
+    # the type of detection. The squares will be drawn using
+    # `geom_point(shape = 2)` with a large size instead of `geom_rect()`.
+    df_rect <- data.frame(
+      x = glyphs_position_x,
+      y = c(
+        # Draw from the title downwards
+        labels_position_y$Park - (seq_along(park_labels) * square_distance),
+        # Draw from the title downwards and add some space between the title and
+        # the legend items, as the title for the detection has multiple lines
+        labels_position_y$Detection -
+          (seq_len(2) * square_distance) -
+          0.5 * square_distance
+      ),
+      fill_color = c(names(park_colors), c("quantified", "detected"))
+    )
+
     # Retrieve coordinates, where to place text labels of the parks and
     # detection categories
     df_rect_labels <- data.frame(

@@ -301,7 +301,6 @@ plot_results <- function(
   plt$barplot <- plt$barplot + theme(legend.position = "none")
   # Create an empty plot to fill the grid
   boxplot_legend <- ggplot_box_legend(boxplot_only = TRUE)
-  empty_plot <- ggplot() + theme_void()
 
   # Add a "not applicable" label to the categories, where we do not want to
   # present the results
@@ -314,7 +313,7 @@ plot_results <- function(
   # Compose the plots into a 4x2 grid
   plt$composite <- (
     plt$spline +
-      empty_plot +
+      plot_spacer() +
       plt$reg_coeffs +
       reg_coeffs_legend +
       plt$boxplot +

@@ -452,6 +452,7 @@ save_results_as_image <- function(
         plot_list[[k]],
         width = 11,
         height = 13,
+        units = "in",
         dpi = 400,
         bg = "white"
       )
