@@ -17,8 +17,6 @@
 #'    deer data from outside of national parks (`non_park_comparison = TRUE`)
 #' @param return_plots A logical flag indicating, whether the plots should be
 #'    generated
-#' @param intercept A logical flag indicating, whether to include the intercept
-#'    in the graphical display of the spline curve
 #' @param centered A logical flag indicating, whether to center the spline
 #'    curve in the graphical display
 #' @return A list with 2 components: list of the fitted models and list of the
@@ -28,7 +26,6 @@ fit_interval_reg <- function(
   df_descriptive,
   non_park_comparison = FALSE,
   return_plots = TRUE,
-  intercept = FALSE,
   centered = TRUE
 ) {
   # Validate input (suggested by CodeRabbit) ===================================
@@ -152,7 +149,6 @@ fit_interval_reg <- function(
           mods_by_category[[k]],
           category_names[k],
           non_park_comparison = non_park_comparison,
-          intercept = intercept,
           centered = centered
         )
       } else {

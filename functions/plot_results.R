@@ -6,7 +6,6 @@ plot_results <- function(
   pollutant_category,
   all_plots = FALSE,
   non_park_comparison = FALSE,
-  intercept = FALSE,
   centered = TRUE
 ) {
   # List to store the plots
@@ -30,7 +29,6 @@ plot_results <- function(
   spline_curve <- calculate_spline_ci(
     fitted_survreg_model,
     max(df_filtered$Date_numeric),
-    intercept = intercept,
     centered = centered
   ) |> mutate(
     Date_of_sample_collection = seq(

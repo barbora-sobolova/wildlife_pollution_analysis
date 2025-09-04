@@ -39,15 +39,14 @@ test_that("Manual calculation of the spline fit is correct", {
     fit_manual <- calculate_spline_ci(
       results$fitted_mods[[k]],
       timeline_length,
-      intercept = TRUE
+      centered = FALSE
     )
     fit_manual_centered <- calculate_spline_ci(
       results$fitted_mods[[k]],
       timeline_length,
-      intercept = FALSE
+      centered = TRUE
     )$fit
-    fit_auto_centered <- fit_auto$fit /
-      exp(coefficients(results$fitted_mods[[k]])["(Intercept)"])
+    fit_auto_centered <- exp(log(fit_auto$fit) - mean(log(fit_auto$fit)))
 
     # Skip tests, if fitting not possible
     if (!anyNA(fit_auto$fit)) {

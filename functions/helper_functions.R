@@ -208,7 +208,6 @@ get_excluded_categories <- function() {
 calculate_spline_ci <- function(
   fitted_survreg_model,
   timeline_length,
-  intercept = FALSE,
   centered = FALSE
 ) {
   # Prepare the time sequence of the spline. We always start from 0.
@@ -227,29 +226,20 @@ calculate_spline_ci <- function(
   vcov_fitted <- fitted_survreg_model$var
 
   # Build the P-spline basis
-  basis_ps <- pspline(spline_curve$Date_numeric) |> as.matrix()
+  basis_ps <- cbind(1, as.matrix(pspline(spline_curve$Date_numeric)))
 
-  # Locate the coefficients corresponding to the spline.
-  where_ps_coeffs <- grep("ps()", names(coeffs))
-  if (intercept) {
-    # Add the intercept to the calculations, if required
-    where_ps_coeffs <- c(1, where_ps_coeffs)
-    basis_ps <- cbind(1, basis_ps)
-  }
+  # Locate the intercept and the coefficients corresponding to the spline
+  where_ps_coeffs <- c(1, grep("ps()", names(coeffs)))
   vcov_fitted_ps <- vcov_fitted[where_ps_coeffs, where_ps_coeffs]
   coeffs_ps <- coeffs[where_ps_coeffs]
 
   # Calculate the fit on the response scale, possibly centered
   if (centered) {
-    # We only center the fit in order to make the curve more interpretable.
-    # This does not affect the standard errors, because we just graphically
-    # shift the curve by a fixed distance with no uncertainty
-    basis_ps_centered <- basis_ps -
+    # We center the fit in order to make the curve more interpretable.
+    basis_ps <- basis_ps -
       rep(1, nrow(basis_ps)) %*% t(apply(basis_ps, 2, mean))
-    fit_ps <- exp(basis_ps_centered %*% coeffs_ps)
-  } else {
-    fit_ps <- exp(basis_ps %*% coeffs_ps)
   }
+  fit_ps <- exp(basis_ps %*% coeffs_ps)
 
   # Calculate the standard errors on the response scale using the delta method
   se_ps <- fit_ps * sqrt(diag(basis_ps %*% vcov_fitted_ps %*% t(basis_ps)))
