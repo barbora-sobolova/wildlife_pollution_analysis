@@ -21,7 +21,9 @@ test_that("Manual calculation of the spline fit is correct", {
 
   # Fit the model
   results <- fit_interval_reg(
+    # Modelling data frame
     df_detected_by_category,
+    # Data frame for the descriptive plots, not really used here
     df_detected_by_category,
     return_plots = FALSE
   )
