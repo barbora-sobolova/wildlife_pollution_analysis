@@ -10,6 +10,8 @@
 #'    covariate columns are `Park` and `Date_of_sample_collection`. For the main
 #'    analysis, covariate `Age` is also required. Metadata columns are
 #'    `Sample_number`, `primary_category` and `Detected_by_category`
+#' @param df_descriptive Data for descriptive plots (incl. substances excluded
+#'   from modeling), e.g. from process_data(..., exclude_uninformative = FALSE).
 #' @param non_park_comparison A logical flag indicating, whether the function
 #'    should perform the main analysis, or the secondary analysis using the roe
 #'    deer data from outside of national parks (`non_park_comparison = TRUE`)

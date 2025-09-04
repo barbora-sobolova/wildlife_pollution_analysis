@@ -43,21 +43,25 @@
 #'      quantifiable values is added to the both best and worst case values.
 #'    \end{itemize}
 process_data <- function(dat, chem_categories, exclude_uninformative = TRUE) {
+  # Non-measurement columns that shall be excluded from some dplyr processing
+  # operations
+  non_measurement_colomns <- c(
+    "Park",
+    "Sample_number",
+    "Species",
+    "Sex",
+    "Age",
+    "Date_of_sample_collection"
+  )
+
   # Reshape the data to a long format
   dat_long <- dat |>
     # Convert the measurements to character to avoid problems when pivoting
-    mutate(across(-tidyselect::any_of("Age"), as.character)) |>
+    mutate(
+      across(-tidyselect::any_of(non_measurement_colomns), as.character)
+    ) |>
     pivot_longer(
-      -tidyselect::any_of(
-        c(
-          "Park",
-          "Sample_number",
-          "Species",
-          "Sex",
-          "Age",
-          "Date_of_sample_collection"
-        )
-      ),
+      -tidyselect::any_of(non_measurement_colomns),
       names_to = "Chemical",
       values_to = "Value"
     ) |>

@@ -64,6 +64,7 @@ df_roe_detected_by_category <- read_csv(
 
 results_roe <- fit_interval_reg(
   df_roe_detected_by_category,
+  df_descriptive,
   non_park_comparison = TRUE
 )
 
