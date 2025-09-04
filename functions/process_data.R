@@ -37,7 +37,7 @@
 #'    \begin{itemize}
 #'      \item For all samples containing only non-detects or non-quantifiable
 #'      values, the best case is a (near) 0 value and the worst case is the sum
-#'      of the detection thresholds.
+#'      of the quantification thresholds.
 #'      \item When at least value is quantified, the non-detects and
 #'      non-quantifiable ones are resolved as above and then the sum of all
 #'      quantifiable values is added to the both best and worst case values.
