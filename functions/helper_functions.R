@@ -234,7 +234,7 @@ get_excluded_categories <- function() {
 calculate_spline_ci <- function(
   fitted_survreg_model,
   timeline_length,
-  centered = FALSE,
+  centered = TRUE,
   endpoint_transformation = TRUE
 ) {
   # Prepare the time sequence of the spline. We always start from 0.
