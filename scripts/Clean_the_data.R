@@ -109,6 +109,9 @@ clean_data[clean_data$Sample_number == "Z73", "Date_of_sample_collection"] <-
 # Fix the incorrect age category
 clean_data[clean_data$Sample_number == "F35", "Age"] <- "adult"
 
+# Fix a missing number
+clean_data[clean_data$Sample_number == "L72", "Fipronil sulfone"] <- "<1"
+
 # Fix confirmed incorrect values
 clean_data[clean_data$Sample_number == "G02", "OC (Octocrylene)"] <- "<10"
 clean_data[clean_data$Sample_number == "G19", "Caffeine"] <- "6.8"
