@@ -215,8 +215,8 @@ get_excluded_categories <- function() {
 #'    curve around 1 in the graphical display
 #'  @param endpoint_transformation A logical flag indicating, whether to
 #'    calculate the spline confidence intervals using the endpoint
-#'    transformation. If `FALSE`, the intervals are calculated using as Wald
-#'    intervals on the response scale.
+#'    transformation. If `FALSE`, the intervals are calculated as Wald
+#'    intervals on the response scale
 #'  @return A data frame with columns `fit`, `se`, `lower` and `upper`. For
 #'    \code{endpoint_transformation = FALSE}, all quantities are on the response
 #'    scale. For \code{endpoint_transformation = TRUE}, `se` column is on the
