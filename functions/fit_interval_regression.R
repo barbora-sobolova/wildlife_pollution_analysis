@@ -19,6 +19,10 @@
 #'    generated
 #' @param centered A logical flag indicating, whether to center the spline
 #'    curve in the graphical display
+#' @param endpoint_transformation A logical flag indicating, whether to
+#'    calculate the spline confidence intervals using the endpoint
+#'    transformation. If `FALSE`, the intervals are calculated using as Wald
+#'    intervals on the response scale. 
 #' @return A list with 2 components: list of the fitted models and list of the
 #'    plots
 fit_interval_reg <- function(
@@ -26,7 +30,8 @@ fit_interval_reg <- function(
   df_descriptive,
   non_park_comparison = FALSE,
   return_plots = TRUE,
-  centered = TRUE
+  centered = TRUE,
+  endpoint_transformation = TRUE
 ) {
   # Validate input (suggested by CodeRabbit) ===================================
   if (

@@ -200,15 +200,42 @@ get_excluded_categories <- function() {
 
 # Functions for the construction of confidence intervals =======================
 
-# Function calculating the confidence intervals of the spline curve manually
-# using the delta method. We can return the curve without the intercept or
-# completely centered.
-# Note: Removing the intercept affects the confidence intervals, centering does
-# not.
+#' Calculate the fit and the confidence intervals of the spline curve
+#' 
+#' @description This function calculates the fit and the confidence intervals
+#' of the spline curve manually using the delta method. For a certain parameter
+#' combination, the results are identical to those from the
+#' \code{predict.survreg} function.
+#' 
+#'  @param fitted_survreg_model A fitted model obtained from \code{survreg}
+#'  @param timeline_length The endpoint of the timeline used for calculating the
+#'    x-coordinates of the curve, which is a sequence from 0 to
+#'    \code{timeline_length}.
+#'  @param centered A logical flag indicating, whether to center the spline
+#'    curve around 1 in the graphical display
+#'  @param endpoint_transformation A logical flag indicating, whether to
+#'    calculate the spline confidence intervals using the endpoint
+#'    transformation. If `FALSE`, the intervals are calculated using as Wald
+#'    intervals on the response scale.
+#'  @return A data frame with columns `fit`, `se`, `lower` and `upper`. For
+#'    \code{endpoint_transformation = FALSE}, all quantities are on the response
+#'    scale. For \code{endpoint_transformation = TRUE}, `se` column is on the
+#'    link scale, while the rest is on the response scale.
+#'  @details If \code{centered = FALSE} and
+#'    \code{endpoint_transformation = FALSE}, this function returns the same
+#'    results as \code{predict.survreg(..., type = "response")}, where the
+#'    \code{newdata} data frame are set to the referential categories, i.e.
+#'    \code{Park = "Bay_Wald"} and \code{Age = "Fawn"}.
+#'    If \code{centered = FALSE} and \code{endpoint_transformation = FALSE},
+#'    this function returns the same results as
+#'    \code{predict.survreg(..., type = "link")} with the referential
+#'    categories set as above, with the only difference, that \code{fit} is
+#'    on the response scale.
 calculate_spline_ci <- function(
   fitted_survreg_model,
   timeline_length,
-  centered = FALSE
+  centered = FALSE,
+  endpoint_transformation = TRUE
 ) {
   # Prepare the time sequence of the spline. We always start from 0.
   # 'timeline_length' is the highest value of the `Date_numeric` column of our
@@ -239,17 +266,31 @@ calculate_spline_ci <- function(
     basis_ps <- basis_ps -
       rep(1, nrow(basis_ps)) %*% t(apply(basis_ps, 2, mean))
   }
-  fit_ps <- exp(basis_ps %*% coeffs_ps)
+  fit_link_scale <- basis_ps %*% coeffs_ps
+  se_link_scale <- sqrt(diag(basis_ps %*% vcov_fitted_ps %*% t(basis_ps)))
 
   # Calculate the standard errors on the response scale using the delta method
-  se_ps <- fit_ps * sqrt(diag(basis_ps %*% vcov_fitted_ps %*% t(basis_ps)))
+  if (endpoint_transformation) {
+    spline_curve <- spline_curve |>
+      mutate(
+        fit = exp(fit_link_scale),
+        se = se_link_scale,
+        lower = exp(fit_link_scale - qnorm(0.975) * se_link_scale),
+        upper = exp(fit_link_scale + qnorm(0.975) * se_link_scale)
+      )
+  } else {
+    fit_response_scale <- exp(fit_link_scale)
+    se_response_scale <- fit_response_scale * se_link_scale
+    
+    spline_curve <- spline_curve |>
+      mutate(
+        fit = fit_response_scale,
+        se = se_response_scale,
+        lower = fit_response_scale - qnorm(0.975) * se_response_scale,
+        upper = fit_response_scale - qnorm(0.975) * se_response_scale
+      )
+  }
 
-  spline_curve <- spline_curve |> mutate(
-    fit = fit_ps,
-    se = se_ps,
-    lower = fit_ps - qnorm(0.975) * se_ps,
-    upper = fit_ps + qnorm(0.975) * se_ps
-  )
   spline_curve
 }
 

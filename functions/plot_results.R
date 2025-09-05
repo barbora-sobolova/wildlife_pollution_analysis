@@ -6,7 +6,8 @@ plot_results <- function(
   pollutant_category,
   all_plots = FALSE,
   non_park_comparison = FALSE,
-  centered = TRUE
+  centered = TRUE,
+  endpoint_transformation = TRUE
 ) {
   # List to store the plots
   plt <- vector("list", 5)
