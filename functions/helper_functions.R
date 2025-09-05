@@ -226,7 +226,7 @@ get_excluded_categories <- function() {
 #'    results as \code{predict.survreg(..., type = "response")}, where the
 #'    \code{newdata} data frame are set to the referential categories, i.e.
 #'    \code{Park = "Bay_Wald"} and \code{Age = "Fawn"}.
-#'    If \code{centered = FALSE} and \code{endpoint_transformation = FALSE},
+#'    If \code{centered = FALSE} and \code{endpoint_transformation = TRUE},
 #'    this function returns the same results as
 #'    \code{predict.survreg(..., type = "link")} with the referential
 #'    categories set as above, with the only difference, that \code{fit} is
@@ -253,7 +253,7 @@ calculate_spline_ci <- function(
   vcov_fitted <- fitted_survreg_model$var
 
   # Build the P-spline basis
-  basis_ps <- cbind(1, as.matrix(pspline(spline_curve$Date_numeric)))
+  basis_ps <- cbind(1, as.matrix(survival::pspline(spline_curve$Date_numeric)))
 
   # Locate the intercept and the coefficients corresponding to the spline
   where_ps_coeffs <- c(1, grep("ps()", names(coeffs)))

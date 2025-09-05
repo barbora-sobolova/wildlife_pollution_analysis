@@ -23,10 +23,8 @@ plot_results <- function(
 
   # Display the spline =========================================================
 
-  # Calculate the spline fit and its CIs. We do it in a custom function, because
-  # the `predict` function returns the fit including intercept, but we are more
-  # interested in the effects (i.e. whether the fit is above, or below 1), than
-  # in the exact value.
+  # We compute the possibly centered spline and draw asymmetric CIs (by endpoint
+  # transformation) as requested for plotting.
   spline_curve <- calculate_spline_ci(
     fitted_survreg_model,
     max(df_filtered$Date_numeric),
