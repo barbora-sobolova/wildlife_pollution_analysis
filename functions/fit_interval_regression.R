@@ -22,7 +22,7 @@
 #' @param endpoint_transformation A logical flag indicating, whether to
 #'    calculate the spline confidence intervals using the endpoint
 #'    transformation. If `FALSE`, the intervals are calculated using as Wald
-#'    intervals on the response scale. 
+#'    intervals on the response scale.
 #' @return A list with 2 components: list of the fitted models and list of the
 #'    plots
 fit_interval_reg <- function(

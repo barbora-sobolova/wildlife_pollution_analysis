@@ -201,12 +201,12 @@ get_excluded_categories <- function() {
 # Functions for the construction of confidence intervals =======================
 
 #' Calculate the fit and the confidence intervals of the spline curve
-#' 
+#'
 #' @description This function calculates the fit and the confidence intervals
 #' of the spline curve manually using the delta method. For a certain parameter
 #' combination, the results are identical to those from the
 #' \code{predict.survreg} function.
-#' 
+#'
 #'  @param fitted_survreg_model A fitted model obtained from \code{survreg}
 #'  @param timeline_length The endpoint of the timeline used for calculating the
 #'    x-coordinates of the curve, which is a sequence from 0 to
@@ -281,7 +281,7 @@ calculate_spline_ci <- function(
   } else {
     fit_response_scale <- exp(fit_link_scale)
     se_response_scale <- fit_response_scale * se_link_scale
-    
+
     spline_curve <- spline_curve |>
       mutate(
         fit = fit_response_scale,
