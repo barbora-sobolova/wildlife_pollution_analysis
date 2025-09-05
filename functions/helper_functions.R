@@ -135,30 +135,41 @@ summarise_detection <- function(x) {
 #'    "Not detected", "Detected", "Quantified" for individual chemicals
 #' @param value A numeric vector containing the concentration values for the
 #'    quantified measurements and NA for the rest
-#' @param threshold A numeric vector containing the quantification thresholds of
-#'    individual chemicals
+#' @param threshold A numeric vector containing the quantification thresholds
+#'    (LOQs) of individual chemicals
 #' @return A named numeric vector of length 2 with elements:
 #'    \code{Value_min} and \code{Value_max} defining the lower and upper bounds
 #'    (best and worst case values) for the aggregated concentration in the
 #'    category
-#' @details When a chemical was not detected, or not quantified we consider
-#'    these observations to be anywhere between 0 and the quantification
-#'    threshold.
+#' @details When a chemical was not detected, we consider these observations to
+#'    be anywhere between zero and the detection threshold (LOD), but we set the
+#'    lower bound to a small value close to zero, e.g. 1e-6 in order to be able
+#'    to fit a lognormal model. The LOD is for each chemical set as 3 / 10 times
+#'    the limit of quantification (LOQ).
+#'
+#'    When a chemical was detected only qualitatively (i.e. not quantified),
+#'    we assume, that it lies anywhere between the LOD and the LOQ.
+#'
 #'    Definition of the aggregated value range:
 #'    \begin{itemize}
-#'      \item For all samples containing only non-detects or non-quantifiable
-#'      values, the best case is 0 and the worst case is the sum of the
-#'      quantification thresholds (LOQ).
-#'      \item When at least one value is quantified, the best value is the sum
-#'      of all quantified values and then the sum of the quantification
-#'      thresholds is added to account for non-detects and non-quantifiable
+#'      \item The lower bound (the best case) is the sum of all quantified
+#'      values plus the sum of the lower bounds of the non-quantified values
+#'      (the sum of LODs of the non-quantified values). We do not need to add
+#'      anything for the non-detects here, since the lower bound of these is 0.
+#'      \item The upper bound is set as the sum of all quantified
+#'      values plus the sum of the upper bounds of all other values, i.e. the
+#'      LOQs for the non-quantified values and the LODs for the non-detected
 #'      values.
 #'    \end{itemize}
 summarise_censoring <- function(detected, value, threshold) {
-  vals_sum <- sum(value[detected == "quantified"], na.rm = TRUE)
+  LOD_factor <- 3 / 10  # nolint
+  quantified_sum <- sum(value[detected == "quantified"], na.rm = TRUE)
+  detected_sum_min <- LOD_factor * sum(threshold[detected == "detected"])  # nolint
   ret <- c(
-    Value_min = vals_sum,
-    Value_max = vals_sum + sum(threshold[detected != "quantified"])
+    Value_min = quantified_sum + detected_sum_min,
+    Value_max = quantified_sum +
+      sum(threshold[detected == "detected"]) +
+      LOD_factor * sum(threshold[detected == "not detected"])  # nolint
   )
   ret
 }

@@ -422,7 +422,7 @@ ggplot(
   geom_segment(linewidth = 0.1) +
   scale_color_manual(values = park_colors, labels = park_labels) +
   labs(
-    title = "LOQ only",
+    title = "LOQ and LOD = 0.3 x LOQ",
     x = NULL,
     y = bquote("concentration in" ~ mu * "g" ~ kg^-1)
   ) +
