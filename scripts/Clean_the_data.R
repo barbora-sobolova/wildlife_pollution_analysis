@@ -111,6 +111,7 @@ clean_data[clean_data$Sample_number == "F35", "Age"] <- "adult"
 
 # Fix confirmed incorrect values
 clean_data[clean_data$Sample_number == "G02", "OC (Octocrylene)"] <- "<10"
+clean_data[clean_data$Sample_number == "G19", "Caffeine"] <- "6.8"
 clean_data[clean_data$Sample_number == "D71", "Clopidogrel"] <- "<1"
 
 # Load the list of measured chemicals ==========================================
