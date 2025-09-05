@@ -136,7 +136,7 @@ clean_data[clean_data$Sample_number == "E83", "(-)-Cotinine"] <- "6.9"
 # Fix the confirmed incorrect thresholds for whole columns
 clean_data[grepl("<", clean_data$`(-)-Cotinine`), "(-)-Cotinine"] <- "<2"
 clean_data[grepl("<", clean_data$TDCPP), "TDCPP"] <- "<2"
-clean_data[grepl("<", clean_data$Picolinafen),"Picolinafen"] <- "<2"
+clean_data[grepl("<", clean_data$Picolinafen), "Picolinafen"] <- "<2"
 clean_data[grepl("<", clean_data$Fenpropidin), "Fenpropidin"] <- "<2"
 clean_data[
   grepl("<", clean_data$`2,2',4,4'-tetrabromodiphenyl ether (BDE-47)`),
