@@ -154,7 +154,8 @@ fit_interval_reg <- function(
           mods_by_category[[k]],
           category_names[k],
           non_park_comparison = non_park_comparison,
-          centered = centered
+          centered = centered,
+          endpoint_transformation = endpoint_transformation
         )
       } else {
         plt_by_category[[k]] <- list()
