@@ -287,7 +287,7 @@ calculate_spline_ci <- function(
         fit = fit_response_scale,
         se = se_response_scale,
         lower = fit_response_scale - qnorm(0.975) * se_response_scale,
-        upper = fit_response_scale - qnorm(0.975) * se_response_scale
+        upper = fit_response_scale + qnorm(0.975) * se_response_scale
       )
   }
 
