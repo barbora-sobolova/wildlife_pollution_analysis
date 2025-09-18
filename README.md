@@ -15,8 +15,8 @@ The following files are present both in the CSV format and as an Excel spreadshe
 - [`clean_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/clean_data.csv)
   - Produced by the [`Clean_the_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_data.R) script.
   - Cleaned and harmonised data from the 2 data batches in a wide format.
-  - We [fix entries](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Clean_the_data.R#L101-L114) that are entered wrong in the raw data file.
-  - We [filter observations](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Clean_the_data.R#L79-L85) that shall not enter the analysis.
+  - We fix entries that are entered wrong in the raw data file.
+  - We filter observations that shall not enter the analysis.
 - [`clean_roe_deer_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/clean_roe_deer_data.csv)
   - Produced by the [`Clean_the_roe_deet_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Clean_the_roe_deer_data.R) script.
   - Cleaned and harmonised data from the additional dataset.
@@ -24,11 +24,11 @@ The following files are present both in the CSV format and as an Excel spreadshe
 ## Data processing
 
 - [`data_by_pollutant_category`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/data_by_pollutant_category.csv)
-  - Produced by the [`Process_the_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script.
+  - Produced by the [`Process_the_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script.
   - Data with values aggregated (summed) by a pollutant category.
 - [`data_non_park_comparison_by_pollutant_category`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/data_non_park_comparison_by_pollutant_category.csv)
   - The additional data with values aggregated (summed) by a pollutant category
-  - Produced by the [`Process_the_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script.
+  - Produced by the [`Process_the_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script.
  
 The file [`chem_categories.csv`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/chemical_categories.csv) contains the thresholds and chemical categories of individual pollutants. It is compiled from the "Stoffübersicht" sheet in [`Auswertung_Winter23_24.xlsx`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/data/20250120_Auswertung_Winter23_24.xlsx).
 
@@ -49,7 +49,7 @@ The response is defined as a sum of observed concentrations per pollutant catego
 - sum of quantified individual concentrations,
 - sum of quantified individual concentrations + sum of the LOQs of the non-quantified, or non-detected observations.
 
-This crucial step is performed by the [`summarise_censoring`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/82d9a41114b8c2552563b6ab950349282f965083/functions/helper_functions.R#L157-L164) function, that is called during data processing (during the execution of the [`Process_the_data`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script).
+This crucial step is performed by the `summarise_censoring` function, that is called during data processing (during the execution of the [`Process_the_data.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Process_the_data.R) script).
 
 ### Age group
 The age explanatory variable is categorical with 3 groups:
@@ -69,11 +69,11 @@ The park explanatory variable indicates in which park a sample was collected and
 - Vorpommersche Boddenlandschaft
 
 ### Day of the sample collection
-The samples of the main dataset were collected from 1. August 2023 to 31. January 2025, always during the hunting season creating a gap with no observations during the spring and early summer months. For this reason we disregard the information about the year and consider only the day of the year for the model fitting. One observation (Z91) was collected on 29. May, which again creates a gap between the bulk of the observations and this single one. As a result, we [remove it](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/scripts/Fit_interval_reg.R#L18C1-L22C33) before the model fitting.
+The samples of the main dataset were collected from 1. August 2023 to 31. January 2025, always during the hunting season creating a gap with no observations during the spring and early summer months. For this reason we disregard the information about the year and consider only the day of the year for the model fitting. One observation (Z91) was collected on 29. May, which again creates a gap between the bulk of the observations and this single one. As a result, we remove it before the model fitting.
 
 For the additional dataset, we have observations from the spring and summer too. Therefore, the timeline there spans 1. August to 9. July and we do use observation Z91 here.
 
-The 'throwing away' of the year information takes place in the [`unify_year`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/7539a1069e44b9deb6273ade462eb739d9a230ff/functions/helper_functions.R#L175-L186) function.
+The 'throwing away' of the year information takes place in the `unify_year` function that is caled during the model fitting procedure [`Fit_interval_reg.R`](https://github.com/barbora-sobolova/wildlife_pollution_analysis/blob/main/scripts/Fit_interval_reg.R).
 
 ## Reproducibility
 All code was run using `R` version **4.5.0**  with the following packages
