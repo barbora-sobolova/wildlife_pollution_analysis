@@ -21,7 +21,9 @@ if (is.na(loc)) loc <- Sys.setlocale("LC_TIME", "English_United States.1252")
 # on 29.05.2024, which is approx. 2 months before all other observations. This
 # creates a gap in the time covariate, better continue without it.
 df_detected_by_category <- read_csv("data/data_by_pollutant_category.csv") |>
-  filter(Sample_number != "Z91")
+  filter(Sample_number != "Z91") |>
+  # Use only the C. elaphus samples for the model fitting
+  filter(Species == "C. elaphus")
 
 # Load and process the descriptive data, that shall be used for displaying the
 # bar- and boxplot part.
