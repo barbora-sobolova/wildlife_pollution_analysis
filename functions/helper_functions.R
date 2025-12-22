@@ -179,7 +179,7 @@ unify_year <- function(date_vec) {
     sep = "-"
   )
   # Cut off at the 8th month, so that we have the beginning in August and the
-  # end in winter for the deer data, or in July for the roe deer data.
+  # end in winter.
   str_y <- ifelse(month(date_vec) < 8, "2023", "2022")
 
   as.Date(paste(str_y, str_m_d, sep = "-"))
@@ -455,28 +455,19 @@ save_results_as_csv <- function(fitted_model_list) {
 
 save_results_as_image <- function(
   plot_list,
-  format = c("png", "pdf"),
-  non_park_comparison = FALSE
+  format = c("png", "pdf")
 ) {
   format <- match.arg(format)
 
   # Loop through models and save each in a desired format
   for (k in seq_along(plot_list)) {
-    if (non_park_comparison) {
-      file_name <- paste0(
-        "figure/Results_visualization_non_park_comparison_",
-        names(plot_list)[k],
-        ".",
-        format
-      )
-    } else {
-      file_name <- paste0(
-        "figure/Results_visualization_",
-        names(plot_list)[k],
-        ".",
-        format
-      )
-    }
+    file_name <- paste0(
+      "figure/Results_visualization_",
+      names(plot_list)[k],
+      ".",
+      format
+    )
+
     suppressWarnings(
       ggsave(
         file_name,
