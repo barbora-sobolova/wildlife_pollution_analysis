@@ -17,8 +17,8 @@ get_primary_category_labels <- function() {
 }
 
 # Park names to display
-get_park_labels <- function(non_park_comparison = FALSE) {
-  labs <- c(
+get_park_labels <- function() {
+  c(
     "Bay_Wald" = "Bavarian\nForest",
     "Eifel" = "Eifel",
     "Hainich" = "Hainich",
@@ -28,17 +28,13 @@ get_park_labels <- function(non_park_comparison = FALSE) {
     "Saechs_Schw" = "Saxon\nSwitz.",
     "Vorpomm" = "West Pomer.\nLagoon Area"
   )
-  if (non_park_comparison) {
-    labs <- c(labs, "Non-Park" = "non-Park")
-  }
-  labs
 }
 
 # Define colors ================================================================
 
 # Color coding of parks in the concentrations plot
-get_park_colors <- function(non_park_comparison = FALSE) {
-  cols <- c(
+get_park_colors <- function() {
+  c(
     "Bay_Wald" = "deepskyblue4",
     "Eifel" = "#AD7B00",
     "Hainich" = "firebrick3",
@@ -48,10 +44,6 @@ get_park_colors <- function(non_park_comparison = FALSE) {
     "Saechs_Schw" = "#004000",
     "Vorpomm" = "magenta3"
   )
-  if (non_park_comparison) {
-    cols <- c(cols, "Non-Park" = "seagreen4")
-  }
-  cols
 }
 
 # Color coding of the covariate categories in descriptive barplots

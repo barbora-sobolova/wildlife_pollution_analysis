@@ -1,9 +1,8 @@
 #' Fit interval censored regression model by category
 #'
 #' @description
-#' This function fits the interval regression model for all available pollutant
-#' categories. (This should be 8 for the deer data, 2 for the comparison with
-#' the roe deer data.)
+#' This function fits the interval regression model for all available (8)
+#' pollutant categories.
 #'
 #' @param df_detected_by_category A data frame with with the interval bounds of
 #'    the measurements required columns `Value_min` and `Value_max`. Required
@@ -12,9 +11,6 @@
 #'    `Sample_number`, `primary_category` and `Detected_by_category`
 #' @param df_descriptive Data for descriptive plots (incl. substances excluded
 #'   from modeling), e.g. from process_data(..., exclude_uninformative = FALSE).
-#' @param non_park_comparison A logical flag indicating, whether the function
-#'    should perform the main analysis, or the secondary analysis using the roe
-#'    deer data from outside of national parks (`non_park_comparison = TRUE`)
 #' @param return_plots A logical flag indicating, whether the plots should be
 #'    generated
 #' @param centered A logical flag indicating, whether to center the spline
@@ -28,7 +24,6 @@
 fit_interval_reg <- function(
   df_detected_by_category,
   df_descriptive,
-  non_park_comparison = FALSE,
   return_plots = TRUE,
   centered = TRUE,
   endpoint_transformation = TRUE
@@ -64,7 +59,9 @@ fit_interval_reg <- function(
     mutate(
       # Convert the categorical variables to factors to keep the levels in the
       # correct order everywhere
-      Park = factor(Park, levels = names(get_park_colors(non_park_comparison))),
+      Park = factor(Park, levels = names(get_park_colors())),
+      Age = factor(Age, levels = c("fawn", "subadult", "adult")),
+      Sex = factor(Sex, levels = c("male", "female")),
       Detected_by_category = factor(
         Detected_by_category,
         levels = c("quantified", "detected", "not detected")
@@ -78,25 +75,13 @@ fit_interval_reg <- function(
         min(as.numeric(Date_of_sample_collection))
     )
 
-  if (!non_park_comparison) {
-    # For the main deer data convert also the age variable to factor.
-    df_detected_by_category <- df_detected_by_category |>
-      mutate(
-        Age = factor(Age, levels = c("fawn", "subadult", "adult")),
-        Sex = factor(Sex, levels = c("male", "female"))
-      )
-  }
-
   # Fit the model for each chemical category ===================================
-  if (non_park_comparison) {
-    # For the roe deer data we do not have the age covariate.
-    model_formula <- formula(response_surv ~ Park + pspline(Date_numeric))
-  } else {
-    # For the main deer data we have all covariates.
-    model_formula <- formula(
-      response_surv ~ Age + Park + Sex + pspline(Date_numeric)
-    )
-  }
+
+  # We have the age, sex and park coariates, that are categorical and the date
+  # covariate, which is assumed to be a smooth curve.
+  model_formula <- formula(
+    response_surv ~ Age + Park + Sex + pspline(Date_numeric)
+  )
 
   # Categories, that we decided not to include in the analysis, because we have
   # too little data, the model is too sensitive to the assumptions etc.
@@ -156,7 +141,6 @@ fit_interval_reg <- function(
           df_descriptive,
           mods_by_category[[k]],
           category_names[k],
-          non_park_comparison = non_park_comparison,
           centered = centered,
           endpoint_transformation = endpoint_transformation
         )
