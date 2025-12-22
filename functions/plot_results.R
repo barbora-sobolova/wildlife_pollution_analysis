@@ -5,7 +5,6 @@ plot_results <- function(
   fitted_survreg_model,
   pollutant_category,
   all_plots = FALSE,
-  non_park_comparison = FALSE,
   centered = TRUE,
   endpoint_transformation = TRUE
 ) {
@@ -14,8 +13,8 @@ plot_results <- function(
   names(plt) <- c("spline", "reg_coeffs", "boxplot", "barplot", "composite")
 
   # Get the plot elements
-  park_labels <- get_park_labels(non_park_comparison)
-  park_colors <- get_park_colors(non_park_comparison)
+  park_labels <- get_park_labels()
+  park_colors <- get_park_colors()
 
   # Extract the coefficients and standard errors
   coeffs <- coefficients(fitted_survreg_model)
@@ -50,64 +49,53 @@ plot_results <- function(
     summ
   )
 
-  # If we compare with the roe deer data from non-park localities, we have to
-  # drop the age covariate from all plots
-  if (non_park_comparison) {
-    df_coeffs <- df_park
-    covcat_colors <- park_colors
-    coeff_plot_title <- "Park regression coefficients"
-    # Add the two placeholder columns for consistency with the age+park path.
-    df_boxbar <- df_filtered |>
-      mutate(Covariate = "Park", Covariate_category = Park)
-  } else {
-    # Number of empty tiles between the times for parks and age categories
-    empty_tiles <- 1
-    df_age <- extract_reg_coeffs(
-      "Age",
-      levels(df_filtered$Age),
-      coeffs,
-      summ
-    )
-    df_empty <- data.frame(
-      Vals = NA,
-      p_val = NA,
-      p_val_label = NA,
-      p_val_cat = -1,
-      lower = NA,
-      upper = NA,
-      formatted_coeff_label = NA,
-      coeff = paste0("Empty_", 1:empty_tiles),
-      # a y value to plot the tiles in the ggplot coordinates
-      dummy_value = 1,
-      empty = "empty"
-    )
-    df_coeffs <- rbind(df_park, df_empty, df_age)
+  # Number of empty tiles between the times for parks and age categories
+  empty_tiles <- 1
+  df_age <- extract_reg_coeffs(
+    "Age",
+    levels(df_filtered$Age),
+    coeffs,
+    summ
+  )
+  df_empty <- data.frame(
+    Vals = NA,
+    p_val = NA,
+    p_val_label = NA,
+    p_val_cat = -1,
+    lower = NA,
+    upper = NA,
+    formatted_coeff_label = NA,
+    coeff = paste0("Empty_", 1:empty_tiles),
+    # a y value to plot the tiles in the ggplot coordinates
+    dummy_value = 1,
+    empty = "empty"
+  )
+  df_coeffs <- rbind(df_park, df_empty, df_age)
 
-    covcat_colors <- c(
-      park_colors,
-      rep(NA, empty_tiles),
-      get_age_mosaic_colors() |>
-        lapply(function(x) unname(x["quantified"])) |>
-        unlist()
-    )
-    names(covcat_colors) <- df_coeffs$coeff
-    x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
-    names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
-    coeff_plot_title <- "Park and age regression coefficients"
+  covcat_colors <- c(
+    park_colors,
+    rep(NA, empty_tiles),
+    get_age_mosaic_colors() |>
+      lapply(function(x) unname(x["quantified"])) |>
+      unlist()
+  )
+  names(covcat_colors) <- df_coeffs$coeff
+  x_labels_coeffs <- c(x_labels_coeffs, levels(df_filtered$Age))
+  names(x_labels_coeffs) <- c(names(park_labels), levels(df_filtered$Age))
+  coeff_plot_title <- "Park and age regression coefficients"
 
-    # For the descriptive box- and barplot, concatenate the Park and Age
-    # covariates
-    df_boxbar <- df_descriptive |>
-      filter(primary_category == pollutant_category) |>
-      # `Age` is an ordered factor. Convert it to character to avoid problems
-      # while pivoting
-      mutate(Age = as.character(Age)) |>
-      pivot_longer(
-        c(Park, Age),
-        names_to = "Covariate",
-        values_to = "Covariate_category"
-      )
-  }
+  # For the descriptive box- and barplot, concatenate the Park and Age
+  # covariates
+  df_boxbar <- df_descriptive |>
+    filter(primary_category == pollutant_category) |>
+    # `Age` is an ordered factor. Convert it to character to avoid problems
+    # while pivoting
+    mutate(Age = as.character(Age)) |>
+    pivot_longer(
+      c(Park, Age),
+      names_to = "Covariate",
+      values_to = "Covariate_category"
+    )
 
   df_boxbar <- df_boxbar |>
     # Set factor levels for the correct ordering of bars
